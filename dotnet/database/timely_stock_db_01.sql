@@ -1,13 +1,13 @@
 USE [master];
 GO
 
-DROP DATABASE IF EXISTS PurrfectInventory;
+DROP DATABASE IF EXISTS TimelyStock;
 
 -- Create the database
-CREATE DATABASE PurrfectInventory;
+CREATE DATABASE TimelyStock;
 GO
 
-USE PurrfectInventory;
+USE TimelyStock;
 GO
 
 -- Atomic build
