@@ -21,7 +21,7 @@ namespace Capstone.DAO
         {
             List<Item> output = new List<Item>();
 
-            string sql = "SELECT item_id, item_name, available_quantity, reorder_quantity, reorder_item, product_url, item_number, department_id, supplier_id FROM items;";
+            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, category_id, supplier_id FROM items;";
 
             try
             {
@@ -50,12 +50,10 @@ namespace Capstone.DAO
             Item newItem = new Item();
             newItem.ItemId = Convert.ToInt32(reader["item_id"]);
             newItem.ItemName = Convert.ToString(reader["item_name"]);
-            newItem.AvailableQuanity = Convert.ToInt32(reader["available_quantity"]);
-            newItem.ReorderQuantity = Convert.ToInt32(reader["reorder_quantity"]);
-            newItem.ReorderItem = Convert.ToBoolean(reader["reorder_item"]);
             newItem.ProductUrl = Convert.ToString(reader["product_url"]); // Unsure about if it will cause error since being a varchar(2083) in db
-            newItem.ItemNumber = Convert.ToInt32(reader["item_number"]); 
-            newItem.DepartmentId = Convert.ToInt32(reader["department_id"]); 
+            newItem.SkuItemNumber = Convert.ToInt32(reader["sku_item_number"]);
+            newItem.Price = Convert.ToDecimal(reader["price"]);
+            newItem.CategoryId = Convert.ToInt32(reader["category_id"]); 
             newItem.SupplierId = Convert.ToInt32(reader["supplier_id"]);
             return newItem;
 
