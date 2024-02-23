@@ -14,7 +14,8 @@ GO
 BEGIN TRANSACTION;
 
 -- Create the tables
-CREATE TABLE users (
+CREATE TABLE users 
+(
 	user_id INT IDENTITY(1,1) NOT NULL,
 	username VARCHAR(50) NOT NULL,
 	password_hash VARCHAR(200) NOT NULL,
@@ -28,22 +29,20 @@ CREATE TABLE users (
 	CONSTRAINT [UQ_username] UNIQUE(username)
 );
 
-CREATE TABLE inventories (
+CREATE TABLE inventories 
+(
 	inventory_id INT IDENTITY(1,1) NOT NULL,
 	user_id INT,
 	inventory_name VARCHAR(200) NOT NULL
 
 	-- Primary Key
 	CONSTRAINT [PK_inventories] PRIMARY KEY(inventory_id)
-
 )
 
 CREATE TABLE items
 (
 	item_id INT IDENTITY(100,1),
 	item_name NVARCHAR(200) NOT NULL,
-	available_quantity INT NOT NULL,
-	reorder_quantity INT NOT NULL,
 	product_url VARCHAR(2083) NULL,
 	sku_item_number INT NULL,
 	price DECIMAL NULL,
@@ -77,10 +76,23 @@ CREATE TABLE suppliers
 );
 
 
+CREATE TABLE inventory_items
+(
+	inventory_id INT NOT NULL,
+	item_id INT NOT NULL,
+	available_quantity INT NOT NULL,
+	reorder_quantity INT NOT NULL,
+
+	-- Compound primary key
+	CONSTRAINT PK_inventory_items PRIMARY KEY(inventory_id, item_id)
+);
+
 -- Foreign keys
 ALTER TABLE items ADD CONSTRAINT FK_items_categories FOREIGN KEY(category_id) REFERENCES categories(category_id);
 ALTER TABLE items ADD CONSTRAINT FK_items_suppliers FOREIGN KEY(supplier_id) REFERENCES suppliers(supplier_id);
 ALTER TABLE inventories ADD CONSTRAINT FK_inventories_users FOREIGN KEY(user_id) REFERENCES users(user_id);
+ALTER TABLE inventory_items ADD CONSTRAINT FK_inventory_items_inventories FOREIGN KEY(inventory_id) REFERENCES inventories(inventory_id);
+ALTER TABLE inventory_items ADD CONSTRAINT FK_inventory_items_items FOREIGN KEY(item_id) REFERENCES items(item_id);
 
 -- Adding data here 
 
@@ -103,5 +115,5 @@ INSERT INTO items(item_name, available_quantity, reorder_quantity, product_url, 
 VALUES('Cat Litter - World''s Best', 3, 1, 'https://www.petsmart.com/cat/litter-and-waste-disposal/litter/worlds-best-andtrade-clumping-multi-cat-corn-cat-litter---lightweight-low-dust-natural-5178276.html', 5178276
 , (SELECT department_id FROM departments WHERE department_name = 'Pets'), (SELECT supplier_id from suppliers WHERE supplier_name = 'PetSmart'));
 
-COMMIT;
---ROLLBACK TRANSACTION;
+--COMMIT;
+ROLLBACK TRANSACTION;
