@@ -1,6 +1,6 @@
 ﻿namespace Capstone.DAO.SqlDaoInterfaces
 {
-    public interface IDepartmentDao
+    public interface ICategoryDao
     {
     }
 }

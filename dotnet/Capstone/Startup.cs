@@ -69,6 +69,7 @@ namespace Capstone
 
             // We populate the new instances based on all the DAO we will use to communicate with the database
             services.AddTransient<IItemDao>(i => new ItemSqlDao(connectionString));
+            services.AddTransient<ISupplierDao>(s => new SupplierSqlDao(connectionString));
 
             // To set up Swagger we need the following
             services.AddSwaggerGen(s => {

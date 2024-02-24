@@ -9,7 +9,6 @@ namespace Capstone.DAO
 {
     public class ItemSqlDao : IItemDao
     {
-        // TODO: Confirm the connection string is pointing to the correct database
         private readonly string ConnectionString;
 
         public ItemSqlDao(string connectionString)

@@ -5,23 +5,23 @@ using Capstone.Models;
 
 namespace Capstone.Controllers
 {
-    [Route("items")]
+    [Route("[Controller]")]
     [ApiController]
-    public class ItemController : ControllerBase
+    public class SuppliersController : ControllerBase
     {
-        private readonly IItemDao itemDao;
-        
-        public ItemController(IItemDao itemDao)
+        private readonly ISupplierDao supplierDao;
+
+        public SuppliersController(ISupplierDao supplierDao)
         {
-            this.itemDao = itemDao;
+            this.supplierDao = supplierDao;
         }
 
-        [HttpGet("/items")]
-        public ActionResult<List<Item>> GetItems()
+        [HttpGet("/suppliers")]
+        public ActionResult<List<Supplier>> GetSuppliers()
         {
             try
             {
-                List<Item> outputList = itemDao.GetItems();
+                List<Supplier> outputList = supplierDao.GetSuppliers();
                 return Ok(outputList);
             }
             catch (System.Exception)
