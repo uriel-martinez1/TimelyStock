@@ -44,6 +44,42 @@ namespace Capstone.DAO
             return output;
         }
 
+        public List<Item> GetItemsByName(string name, bool useWildCard)
+        {
+            List<Item> output = new List<Item>();
+
+            if (useWildCard)
+            {
+                name = "%" + name + "%";
+            }
+
+            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, category_id, supplier_id FROM items " +
+                "WHERE item_name LIKE @name;";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@name", name);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Item item = MapRowToItem(reader);
+                        output.Add(item);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return output;
+        }
+
         public Item MapRowToItem(SqlDataReader reader)
         {
             Item newItem = new Item();

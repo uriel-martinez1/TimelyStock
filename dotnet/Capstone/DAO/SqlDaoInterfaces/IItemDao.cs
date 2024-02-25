@@ -7,5 +7,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
     public interface IItemDao
     {
         List<Item> GetItems();
+        List<Item> GetItemsByName(string name, bool useWildCard);
     }
 }

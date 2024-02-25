@@ -29,5 +29,19 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("/items/search")]
+        public ActionResult<List<Item>> GetItemsByName(string name, bool useWildCard = false)
+        {
+            try
+            {
+                List<Item> items = itemDao.GetItemsByName(name, useWildCard);
+                return Ok(items);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }
