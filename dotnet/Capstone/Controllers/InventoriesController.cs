@@ -5,6 +5,8 @@ using Capstone.Models;
 
 namespace Capstone.Controllers
 {
+    [Route("[Controller]")]
+    [ApiController]
     public class InventoriesController : ControllerBase
     {
         private readonly IInventoryDao inventoryDao;
