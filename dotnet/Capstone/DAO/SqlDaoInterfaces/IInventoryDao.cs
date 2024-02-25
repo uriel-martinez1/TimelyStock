@@ -4,8 +4,8 @@ using System.Data.SqlClient;
 
 namespace Capstone.DAO.SqlDaoInterfaces
 {
-    public interface ICategoryDao
+    public interface IInventoryDao
     {
-        List<Category> GetCategories();
+        List<Inventory> GetInventories();
     }
 }
