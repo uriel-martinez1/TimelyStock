@@ -85,9 +85,34 @@ namespace Capstone.DAO
             Item newItem = new Item();
             newItem.ItemId = Convert.ToInt32(reader["item_id"]);
             newItem.ItemName = Convert.ToString(reader["item_name"]);
-            newItem.ProductUrl = Convert.ToString(reader["product_url"]); // Unsure about if it will cause error since being a varchar(2083) in db
-            newItem.SkuItemNumber = Convert.ToInt32(reader["sku_item_number"]);
-            newItem.Price = Convert.ToDecimal(reader["price"]);
+
+            if (reader["product_url"] is DBNull)    // Nullable value
+            {
+                newItem.ProductUrl = null;
+            }
+            else
+            {
+                newItem.ProductUrl = Convert.ToString(reader["product_url"]);   
+            }
+
+            if (reader["sku_item_number"] is DBNull)    // Nullable value
+            {
+                newItem.SkuItemNumber = null;
+            }
+            else
+            {
+                newItem.SkuItemNumber = Convert.ToInt32(reader["sku_item_number"]);
+            }
+
+            if (reader["price"] is DBNull)    // Nullable value
+            {
+                newItem.Price = null;
+            }
+            else
+            {
+                newItem.Price = Convert.ToDecimal(reader["price"]);
+            }
+
             newItem.AvailableQuantity = Convert.ToInt32(reader["available_quantity"]);
             newItem.ReorderQuantity = Convert.ToInt32(reader["reorder_quantity"]);
             newItem.CategoryId = Convert.ToInt32(reader["category_id"]); 
