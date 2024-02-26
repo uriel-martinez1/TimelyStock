@@ -46,8 +46,8 @@ CREATE TABLE items
 	product_url VARCHAR(2083) NULL,
 	sku_item_number INT NULL,
 	price DECIMAL NULL,
-	category_id INT,
-	supplier_id INT,
+	category_id INT NOT NULL,
+	supplier_id INT NOT NULL,
 
 	-- Primary key 
 	CONSTRAINT [PK_items] PRIMARY KEY(item_id)
