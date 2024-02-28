@@ -5,6 +5,7 @@
   </div>
 
   <div class="inventory">
+    <h1>List of Inventories</h1>
     <Inventory></Inventory>
   </div>
 </template>

@@ -17,7 +17,8 @@ export default {
     },
 
     created() {
-        InventoriesServices.getInventories().then((response) => {
+        InventoriesServices.getInventories(this.$store.state.user.userId).then((response) => {
+            //console.log("The created is the one used.")
             this.inventories = response.data;
         })
     },
@@ -25,6 +26,7 @@ export default {
     methods: {
         loadInventories() {
             InventoriesServices.getInventories(this.$store.state.user.userId).then((response) => {
+                //console.log("The functions in the methods object are being used.")
                 this.inventories = response.data;
             })
         }
