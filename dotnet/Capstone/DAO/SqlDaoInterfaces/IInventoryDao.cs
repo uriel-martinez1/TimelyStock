@@ -7,5 +7,7 @@ namespace Capstone.DAO.SqlDaoInterfaces
     public interface IInventoryDao
     {
         List<Inventory> GetInventories();
+
+        List<Inventory> GetInventoriesByUserId(int userId);
     }
 }

@@ -29,5 +29,19 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("{userId}")]
+        public ActionResult<List<Inventory>> GetUserInventories(int userId)
+        {
+            try
+            {
+                List<Inventory> outputList = inventoryDao.GetInventoriesByUserId(userId);
+                return Ok(outputList);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }

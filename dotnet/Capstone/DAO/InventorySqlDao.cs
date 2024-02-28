@@ -17,7 +17,7 @@ namespace Capstone.DAO
         }
         public List<Inventory> GetInventories()
         {
-            List<Inventory> output = new List<Inventory>();
+            List<Inventory> inventories = new List<Inventory>();
 
             string sql = "SELECT inventory_id, user_id, inventory_name FROM inventories;";
 
@@ -32,7 +32,7 @@ namespace Capstone.DAO
                     while (reader.Read())
                     {
                         Inventory inventory = MapRowToInventory(reader);
-                        output.Add(inventory);
+                        inventories.Add(inventory);
                     }
                 }
             }
@@ -40,7 +40,37 @@ namespace Capstone.DAO
             {
                 throw new DaoException("SQL exception occurred.", ex);
             }
-            return output;
+            return inventories;
+        }
+
+        public List<Inventory> GetInventoriesByUserId(int userId)
+        {
+            List<Inventory> inventories = new List<Inventory>();
+
+            string sql = "SELECT inventory_id, user_id, inventory_name FROM inventories " +
+                "WHERE user_id = @userId;";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Inventory inventory = MapRowToInventory(reader);
+                        inventories.Add(inventory);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occurred", ex);
+            }
+            return inventories;
         }
 
         public Inventory MapRowToInventory(SqlDataReader reader)
