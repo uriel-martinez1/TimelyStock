@@ -16,20 +16,20 @@ namespace Capstone.Controllers
             this.inventoryDao = inventoryDao;
         }
 
-        //[HttpGet("/inventories")]
-        //public ActionResult<List<Inventory>> GetInventories()
-        //{
-        //    try
-        //    {
-        //        List<Inventory> outputList = inventoryDao.GetInventories();
-        //        return Ok(outputList);
-        //    }
-        //    catch (System.Exception)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-        
+        [HttpGet("/inventories")]
+        public ActionResult<List<Inventory>> GetInventories()
+        {
+            try
+            {
+                List<Inventory> outputList = inventoryDao.GetInventories();
+                return Ok(outputList);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet("{userId}")]
         public ActionResult<List<Inventory>> GetUserInventories(int userId)
         {

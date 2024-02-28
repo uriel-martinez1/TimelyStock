@@ -15,6 +15,12 @@ namespace Capstone.DAO
         {
             ConnectionString = connectionString;
         }
+
+        public Inventory CreatedInventory()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Inventory> GetInventories()
         {
             List<Inventory> inventories = new List<Inventory>();
