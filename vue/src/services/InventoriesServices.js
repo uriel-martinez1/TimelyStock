@@ -10,4 +10,7 @@ export default {
     getInventories(userId){
         return axios.get(`/inventories/${userId}`);
     },
+    addInventory(inventory){
+        return axios.post(`/inventories`, inventory);
+    },
 }
