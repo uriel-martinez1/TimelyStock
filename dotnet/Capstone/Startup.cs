@@ -72,6 +72,7 @@ namespace Capstone
             services.AddTransient<ISupplierDao>(s => new SupplierSqlDao(connectionString));
             services.AddTransient<ICategoryDao>(c => new CategorySqlDao(connectionString));
             services.AddTransient<IInventoryDao>(i => new InventorySqlDao(connectionString));
+            services.AddHttpContextAccessor(); // we are using this to access User Identity
 
             // To set up Swagger we need the following
             services.AddSwaggerGen(s => {
