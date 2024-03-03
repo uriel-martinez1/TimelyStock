@@ -4,7 +4,7 @@
         <br>
         <input type="text" id="inventoryName" name="inventoryName" v-model="newInventory.inventoryName"/>
         <br><br>
-        <button v-on:click.prevent="saveNewInventory" :disabled="validate">Save</button>
+        <button v-on:click.prevent="saveNewInventory" :disabled="validData">Save</button>
     </form>
 </template>
 
@@ -16,13 +16,20 @@ export default {
         return {
             inventory: [],
             newInventory: {
+                userId: null,
                 inventoryName: "",
+                
             },
         };
     },
+    // this is for the lifecycle hook when the component is creating to grab the userId from the store
+    created() {
+            this.newInventory.userId = this.$store.state.user ? this.$store.state.user.userId : null;
+        },
+    // this is for validating that the input fields for a new inventory are filled
     computed: {
         validData() {
-            return !this.newInventory.inventoryName;
+            return !this.newInventory.inventoryName || !this.newInventory.userId;
         },
     },
     methods: {
@@ -33,6 +40,7 @@ export default {
             InventoriesServices
                 .addInventory(this.newInventory)
                 .then((response) => {
+                    this.$emit('Inventory was added!', response.data);
                     this.inventory = response.data;
                     this.resetForm();
                 })
@@ -50,6 +58,7 @@ export default {
         },
         resetForm() {
             this.newInventory = {
+                userId: this.$store.state.user ? this.$store.state.user.userId : null,
                 inventoryName: "",
             };
         },

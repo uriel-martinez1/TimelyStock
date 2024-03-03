@@ -11,6 +11,6 @@ export default {
         return axios.get(`/inventories/${userId}`);
     },
     addInventory(inventory){
-        return axios.post(`/inventories`, inventory);
+        return axios.post(`/Inventories`, inventory);
     },
 }

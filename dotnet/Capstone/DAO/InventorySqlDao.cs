@@ -5,23 +5,20 @@ using System.Data.SqlClient;
 using Capstone.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 
 namespace Capstone.DAO
 {
     public class InventorySqlDao : IInventoryDao
     {
         private readonly string ConnectionString;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public InventorySqlDao(string connectionString, IHttpContextAccessor httpContextAccessor)
-        {
-            ConnectionString = connectionString;
-            _httpContextAccessor = httpContextAccessor;
-        }
+        private UserSqlDao userSqlDao;
+        
 
         public InventorySqlDao(string connectionString)
         {
             ConnectionString = connectionString;
+            userSqlDao = new UserSqlDao(connectionString);
         }
 
         public List<Inventory> GetInventories()
@@ -84,7 +81,7 @@ namespace Capstone.DAO
             return inventories;
         }
 
-        public Inventory CreatedInventory(Inventory inventory)
+        public Inventory CreateInventory(Inventory inventory)
         {
             Inventory newInventory = new Inventory();
 
@@ -100,8 +97,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
-                    string userId = _httpContextAccessor.HttpContext.User.FindFirst("sub")?.Value; // this allows us to access the user identity 
-                    cmd.Parameters.AddWithValue("@userId", int.Parse(userId)); 
+                    cmd.Parameters.AddWithValue("@userId", inventory.UserId);
                     cmd.Parameters.AddWithValue("@inventoryName", inventory.InventoryName);
                     newInventoryId = Convert.ToInt32(cmd.ExecuteScalar());
                 }

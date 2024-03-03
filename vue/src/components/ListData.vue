@@ -22,14 +22,11 @@ export default {
             this.inventories = response.data;
         })
     },
-    
+
     methods: {
-        loadInventories() {
-            InventoriesServices.getInventories(this.$store.state.user.userId).then((response) => {
-                //console.log("The functions in the methods object are being used.")
-                this.inventories = response.data;
-            })
-        }
+        addNewInventory(newInventory) {
+            this.inventories.push(newInventory);
+        },
     }
 }
 </script>

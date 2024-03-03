@@ -10,13 +10,15 @@ namespace Capstone.Controllers
     public class InventoriesController : ControllerBase
     {
         private readonly IInventoryDao inventoryDao;
+        private readonly IUserDao userDao;
 
-        public InventoriesController(IInventoryDao inventoryDao)
+        public InventoriesController(IInventoryDao inventoryDao, IUserDao userDao)
         {
             this.inventoryDao = inventoryDao;
+            this.userDao = userDao;
         }
 
-        [HttpGet("/inventories")]
+        [HttpGet()]
         public ActionResult<List<Inventory>> GetInventories()
         {
             try
@@ -42,6 +44,13 @@ namespace Capstone.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost()]
+        public ActionResult<Inventory> AddInventory(Inventory inventory)
+        {
+            Inventory added = inventoryDao.CreateInventory(inventory);
+            return Created($"/inventories/{added.InventoryId}", added);
         }
     }
 }

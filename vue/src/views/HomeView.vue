@@ -11,7 +11,7 @@
 
   <div class="list">
     <h2>List of Inventories</h2>
-    <ListData></ListData>
+    <ListData ref="listData"></ListData>
   </div>
 </template>
 
@@ -27,8 +27,14 @@ export default {
   data() {
     return {
 
-    }
-  }
+    };
+  },
+  // this should grab all the inventories when a new inventory item was added
+  methods: {
+    handleInventoryAdded(newInventory){
+      this.$refs.listData.addNewInventory(newInventory);
+    },
+  },
 };
 </script>
 
