@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Capstone.Models;
+using System;
 
 namespace Capstone.Controllers
 {
@@ -45,6 +46,16 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
+
+        //[HttpPost()]
+        //public ActionResult<Inventory> AddInventory(Inventory inventory)
+        //{
+        //    User user = userDao.GetUserByUsername(User.Identity.Name);
+        //    Console.WriteLine(User.Identity.Name);
+        //    Inventory added = inventoryDao.CreateInventory(inventory, user);
+        //    return Created($"/inventories/{added.InventoryId}", added);
+        //}
+
 
         [HttpPost()]
         public ActionResult<Inventory> AddInventory(Inventory inventory)

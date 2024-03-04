@@ -43,6 +43,7 @@ export default {
                     this.$emit('Inventory was added!', response.data);
                     this.inventory = response.data;
                     this.resetForm();
+                    this.refreshHome();
                 })
         },
         validateAddForm() {
@@ -62,6 +63,10 @@ export default {
                 inventoryName: "",
             };
         },
+        refreshHome() {
+            location.reload ? location.reload() : (location = this.$router.push({ name: "home" }));
+        },
+
     }
 }
 </script>

@@ -97,6 +97,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
+                    // this is where we create a string that we convert to a int 
                     cmd.Parameters.AddWithValue("@userId", inventory.UserId);
                     cmd.Parameters.AddWithValue("@inventoryName", inventory.InventoryName);
                     newInventoryId = Convert.ToInt32(cmd.ExecuteScalar());
