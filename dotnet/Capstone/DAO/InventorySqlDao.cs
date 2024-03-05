@@ -142,9 +142,37 @@ namespace Capstone.DAO
             return inventory;
         }
 
-        public Inventory UpdateInventory(Inventory inventoryToUpdate)
+        public Inventory UpdateInventory(int id, Inventory inventoryToUpdate)
         {
-            throw new NotImplementedException();
+            Inventory updatedInventory = null;
+
+            string sql = "UPDATE inventories " +
+                "SET inventory_name = @inventoryName " +
+                "WHERE inventory_id = @inventoryId;";
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@inventoryName", inventoryToUpdate.InventoryName);
+                    cmd.Parameters.AddWithValue("@inventoryId", id);
+
+                    int numberOfRowsAffected = cmd.ExecuteNonQuery();
+
+                    if (numberOfRowsAffected == 0)
+                    {
+                        throw new DaoException("Zero rows affected, expected at least one");
+                    }
+                }
+                updatedInventory = GetInventoryById(id);
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+            return updatedInventory;
+            
         }
 
         public Inventory MapRowToInventory(SqlDataReader reader)

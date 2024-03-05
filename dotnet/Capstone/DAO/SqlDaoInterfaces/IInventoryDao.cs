@@ -10,6 +10,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
         List<Inventory> GetInventoriesByUserId(int userId);
         Inventory CreateInventory(Inventory inventory);
         Inventory GetInventoryById(int inventoryId);
-        Inventory UpdateInventory(Inventory inventoryToUpdate);
+        Inventory UpdateInventory(int id, Inventory inventoryToUpdate);
     }
 }

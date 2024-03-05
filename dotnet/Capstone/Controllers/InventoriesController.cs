@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Capstone.Models;
 using System;
+using Capstone.Exceptions;
 
 namespace Capstone.Controllers
 {
@@ -67,20 +68,19 @@ namespace Capstone.Controllers
         [HttpPut("{id}")]
         public ActionResult<Inventory> UpdateInventory(int id, Inventory inventoryToUpdate)
         {
-            if(id != inventoryToUpdate.InventoryId && inventoryToUpdate.InventoryId <= 0)
-            {
-                return BadRequest();
-            }
+            //if(id != inventoryToUpdate.InventoryId && inventoryToUpdate.InventoryId <= 0)
+            //{
+            //    return BadRequest();
+            //}
 
             try
             {
-                Inventory updatedInventory = inventoryDao.UpdateInventory(inventoryToUpdate);
+                Inventory updatedInventory = inventoryDao.UpdateInventory(id,inventoryToUpdate);
                 return Ok(updatedInventory);
             }
-            catch (Exception)
+            catch (System.Exception)
             {
-
-                throw;
+                return NotFound();
             }
         }
     }
