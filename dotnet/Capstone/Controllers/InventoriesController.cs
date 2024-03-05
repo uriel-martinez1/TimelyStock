@@ -63,5 +63,25 @@ namespace Capstone.Controllers
             Inventory added = inventoryDao.CreateInventory(inventory);
             return Created($"/inventories/{added.InventoryId}", added);
         }
+
+        [HttpPut("{id}")]
+        public ActionResult<Inventory> UpdateInventory(int id, Inventory inventoryToUpdate)
+        {
+            if(id != inventoryToUpdate.InventoryId && inventoryToUpdate.InventoryId <= 0)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                Inventory updatedInventory = inventoryDao.UpdateInventory(inventoryToUpdate);
+                return Ok(updatedInventory);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

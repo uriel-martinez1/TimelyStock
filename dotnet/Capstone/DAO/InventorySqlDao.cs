@@ -142,6 +142,11 @@ namespace Capstone.DAO
             return inventory;
         }
 
+        public Inventory UpdateInventory(Inventory inventoryToUpdate)
+        {
+            throw new NotImplementedException();
+        }
+
         public Inventory MapRowToInventory(SqlDataReader reader)
         {
             Inventory inventory = new Inventory();
@@ -150,6 +155,5 @@ namespace Capstone.DAO
             inventory.InventoryName = Convert.ToString(reader["inventory_name"]);
             return inventory;
         }
-
     }
 }
