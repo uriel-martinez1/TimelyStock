@@ -2,6 +2,11 @@
     <ul>
         <li v-for="inventory in inventories" v-bind:key="inventory.id">
             {{ inventory.inventoryName }}
+            <div>
+                <router-link>Edit</router-link>
+                <router-link>Delete</router-link>
+                <router-link>Add Items</router-link>
+            </div>
         </li>
     </ul>
 </template>
