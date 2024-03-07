@@ -10,7 +10,17 @@ export default {
     getInventories(userId){
         return axios.get(`/inventories/${userId}`);
     },
-    addInventory(inventory){
-        return axios.post(`/Inventories`, inventory);
+
+    getInventory(inventoryId) {
+        return axios.get(`/inventories/${inventoryId}`)
     },
+
+    addInventory(inventory){
+        return axios.post(`/inventories`, inventory);
+    },
+
+    updateInventory(inventory) {
+        return axios.put(`/inventories/${inventory.inventoryId}`, inventory);
+    }
+    
 }

@@ -4,40 +4,58 @@
     <p>You must be authenticated to see this</p>
   </div>
 
-  <div class="add">
-    <h2>Add new Inventory</h2>
-    <AddForm></AddForm>
-  </div>
-
   <div class="list">
     <h2>List of Inventories</h2>
-    <ListData ref="listData"></ListData>
+    <InventoryList v-bind:inventories="inventories"/>
   </div>
+
+  <!-- <div class="add">
+    <h2>Add new Inventory</h2>
+    <InventoryAddForm></InventoryAddForm>
+  </div> -->
 </template>
 
 <script>
-import ListData from '../components/ListData.vue';
-import AddForm from '../components/AddForm.vue';
+import InventoryList from '../components/InventoriesList.vue';
+import InventoryAddForm from '../components/InventoryAddForm.vue';
+import InventoriesServices from '../services/InventoriesServices';
 
 export default {
   components: {
-    ListData,
-    AddForm,
+    InventoryList,
+    //InventoryAddForm,
   },
   data() {
     return {
-
-    };
-  },
+      inventories: [],
+      showAddInventory: false,
+      newInventory: {
+        userId: null,
+        inventoryName: "",
+    },
+  };
+},
+computed: {
+  validData() {
+    return !this.newInventory.inventoryName;
+  }
+},
   // this should grab all the inventories when a new inventory item was added
   methods: {
-    handleInventoryAdded(newInventory){
-      this.$refs.listData.addNewInventory(newInventory);
-    },
+    getInventories() {
+      InventoriesServices.getInventories(this.$store.state.user.userId)
+      .then((response) => {
+        this.inventories = response.data;
+        console.log(this.$store.state.user.userId)
+      })
+    }
   },
+  created() {
+    this.getInventories()
+  }
 };
 </script>
 
 <style>
 
-</style>
+</style>../components/InventoriesList.vue

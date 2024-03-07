@@ -48,6 +48,20 @@ namespace Capstone.Controllers
             }
         }
 
+        [HttpGet("{inventoryId}")]
+        public ActionResult<Inventory> GetInventoryByInventoryId(int inventoryId)
+        {
+            try
+            {
+                Inventory output = inventoryDao.GetInventoryById(inventoryId);
+                return Ok(output);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
+
         //[HttpPost()]
         //public ActionResult<Inventory> AddInventory(Inventory inventory)
         //{
@@ -68,11 +82,6 @@ namespace Capstone.Controllers
         [HttpPut("{id}")]
         public ActionResult<Inventory> UpdateInventory(int id, Inventory inventoryToUpdate)
         {
-            //if(id != inventoryToUpdate.InventoryId && inventoryToUpdate.InventoryId <= 0)
-            //{
-            //    return BadRequest();
-            //}
-
             try
             {
                 Inventory updatedInventory = inventoryDao.UpdateInventory(id,inventoryToUpdate);

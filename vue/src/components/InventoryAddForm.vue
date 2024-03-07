@@ -1,10 +1,9 @@
 <template>
-    <form v-on:submit.prevent="submitForm" class="addForm">
+    <form v-on:submit.prevent="submitForm" class="inventoryAddForm">
         <label for="inventoryName">Inventory Name:</label>
-        <br>
-        <input type="text" id="inventoryName" name="inventoryName" v-model="newInventory.inventoryName"/>
-        <br><br>
+        <input id="inventoryName" type="text" class="form-control" v-model="editInventory.inventoryName" />
         <button v-on:click.prevent="saveNewInventory" :disabled="validData">Save</button>
+        <button v-on:click="cancelForm">Cancel</button>
     </form>
 </template>
 
@@ -12,39 +11,45 @@
 import InventoriesServices from '../services/InventoriesServices';
 
 export default {
+    props: {
+        inventory: {
+            type: Object,
+            required: true
+        }
+    },
     data() {
         return {
-            inventory: [],
-            newInventory: {
-                userId: null,
-                inventoryName: "",
+            editInventory: {
+                id: this.inventory.inventoryId,
+                userId: this.inventory.userId,
+                inventoryName: this.inventory.inventoryName,
                 
             },
         };
     },
     // this is for the lifecycle hook when the component is creating to grab the userId from the store
-    created() {
-            this.newInventory.userId = this.$store.state.user ? this.$store.state.user.userId : null;
-        },
-    // this is for validating that the input fields for a new inventory are filled
-    computed: {
-        validData() {
-            return !this.newInventory.inventoryName || !this.newInventory.userId;
-        },
-    },
+    
     methods: {
-        saveNewInventory() {
+        submitForm() {
             if (!this.validateAddForm()) {
                 return;
             }
-            InventoriesServices
-                .addInventory(this.newInventory)
-                .then((response) => {
-                    this.$emit('Inventory was added!', response.data);
-                    this.inventory = response.data;
-                    this.resetForm();
-                    this.refreshHome();
+            if (this.editInventory.id === 0) {
+                InventoriesServices.addInventory(this.editInventory)
+                .then(response => {
+                    if(response.status === 201) {
+                        this.$router.push({name: 'home'});
+                    }
                 })
+            } else {
+                InventoriesServices.updateInventory(this.editInventory)
+                .then(response => {
+                    if(response.status === 200) {
+                        this.$router.push({name: 'home'});
+                    }
+                })
+            }
+
         },
         validateAddForm() {
             let msg = "";
@@ -57,6 +62,10 @@ export default {
             }
             return true;
         },
+        cancelForm() {
+            this.$router.push({name: 'home'});
+        },
+
         resetForm() {
             this.newInventory = {
                 userId: this.$store.state.user ? this.$store.state.user.userId : null,
