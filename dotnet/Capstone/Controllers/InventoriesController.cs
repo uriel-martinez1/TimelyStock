@@ -25,20 +25,8 @@ namespace Capstone.Controllers
         {
             try
             {
-                List<Inventory> outputList = inventoryDao.GetInventories();
-                return Ok(outputList);
-            }
-            catch (System.Exception)
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpGet("{userId}")]
-        public ActionResult<List<Inventory>> GetUserInventories(int userId)
-        {
-            try
-            {
+                User user = userDao.GetUserByUsername(User.Identity.Name);
+                int userId = user.UserId;
                 List<Inventory> outputList = inventoryDao.GetInventoriesByUserId(userId);
                 return Ok(outputList);
             }
@@ -62,29 +50,20 @@ namespace Capstone.Controllers
             }
         }
 
-        //[HttpPost()]
-        //public ActionResult<Inventory> AddInventory(Inventory inventory)
-        //{
-        //    User user = userDao.GetUserByUsername(User.Identity.Name);
-        //    Console.WriteLine(User.Identity.Name);
-        //    Inventory added = inventoryDao.CreateInventory(inventory, user);
-        //    return Created($"/inventories/{added.InventoryId}", added);
-        //}
-
-
         [HttpPost()]
         public ActionResult<Inventory> AddInventory(Inventory inventory)
         {
-            Inventory added = inventoryDao.CreateInventory(inventory);
+            User user = userDao.GetUserByUsername(User.Identity.Name);
+            Inventory added = inventoryDao.CreateInventory(inventory, user);
             return Created($"/inventories/{added.InventoryId}", added);
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<Inventory> UpdateInventory(int id, Inventory inventoryToUpdate)
+        [HttpPut("{inventoryId}")]
+        public ActionResult<Inventory> UpdateInventory(int inventoryId, Inventory inventoryToUpdate)
         {
             try
             {
-                Inventory updatedInventory = inventoryDao.UpdateInventory(id,inventoryToUpdate);
+                Inventory updatedInventory = inventoryDao.UpdateInventory(inventoryId,inventoryToUpdate);
                 return Ok(updatedInventory);
             }
             catch (System.Exception)
