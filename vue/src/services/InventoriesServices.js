@@ -8,19 +8,19 @@ const http = axios.create({
 export default {
     // the endpoint and parameters in the function could change
     getInventories(){
-        return axios.get(`/Inventories`);
+        return axios.get(`/inventories`);
     },
 
     getInventory(inventoryId) {
-        return axios.get(`/Inventories/${inventoryId}`)
+        return axios.get(`/inventories/${inventoryId}`)
     },
 
     addInventory(inventory){
-        return axios.post(`/Inventories`, inventory);
+        return axios.post(`/inventories`, inventory);
     },
 
     updateInventory(inventory) {
-        return axios.put(`/Inventories/${inventory.inventoryId}`, inventory);
-    }
+        return axios.put(`/inventories/${inventory.inventoryId}`, inventory);
+    },
     
 }

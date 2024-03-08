@@ -7,7 +7,7 @@ using Capstone.Exceptions;
 
 namespace Capstone.Controllers
 {
-    [Route("[Controller]")]
+    [Route("inventories")]
     [ApiController]
     public class InventoriesController : ControllerBase
     {

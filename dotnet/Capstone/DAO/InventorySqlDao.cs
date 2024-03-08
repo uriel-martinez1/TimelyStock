@@ -81,37 +81,6 @@ namespace Capstone.DAO
             return inventories;
         }
 
-        //public Inventory CreateInventory(Inventory inventory)
-        //{
-        //    Inventory newInventory = new Inventory();
-
-        //    string sql = "INSERT INTO inventories(user_id, inventory_name) " +
-        //        "OUTPUT inserted.inventory_id " +
-        //        "VALUES (@userId, @inventoryName);";
-
-        //    try
-        //    {
-        //        int newInventoryId;
-
-        //        using (SqlConnection conn = new SqlConnection(ConnectionString))
-        //        {
-        //            conn.Open();
-        //            SqlCommand cmd = new SqlCommand(sql, conn);
-        //            // this is where we create a string that we convert to a int 
-        //            cmd.Parameters.AddWithValue("@userId", inventory.UserId);
-        //            cmd.Parameters.AddWithValue("@inventoryName", inventory.InventoryName);
-        //            newInventoryId = Convert.ToInt32(cmd.ExecuteScalar());
-        //        }
-
-        //        newInventory = GetInventoryById(newInventoryId);
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        throw new DaoException("SQL Exception occured", ex);
-        //    }
-        //    return newInventory;
-        //}
-
         public Inventory CreateInventory(Inventory inventory, User user)
         {
             Inventory newInventory = new Inventory();
