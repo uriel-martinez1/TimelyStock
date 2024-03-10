@@ -6,7 +6,7 @@ import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import LogoutView from '../views/LogoutView.vue';
 import RegisterView from '../views/RegisterView.vue';
-import InventoryDetailView from '../views/InventoryDetailView.vue'
+import InventoryView from '../views/InventoryView.vue'
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -21,6 +21,14 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/inventories/:inventoryId",
+    name: "InventoryView",
+    component: InventoryView,
     meta: {
       requiresAuth: true
     }
@@ -47,14 +55,6 @@ const routes = [
     component: RegisterView,
     meta: {
       requiresAuth: false
-    }
-  },
-  {
-    path: "/inventories/:id",
-    name: "InventoryView",
-    component: InventoryDetailView,
-    meta: {
-      requiresAuth: true
     }
   },
 ];

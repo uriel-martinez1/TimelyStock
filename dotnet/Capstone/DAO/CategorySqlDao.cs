@@ -7,6 +7,7 @@ using System;
 
 namespace Capstone.DAO
 {
+    //ORM - Entity Framework - system that writes SQL for you
     public class CategorySqlDao : ICategoryDao
     {
         private readonly string ConnectionString;
