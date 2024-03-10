@@ -11,7 +11,7 @@
 
   <div class="add">
     <h2>Add new Inventory</h2>
-    <button>Add Inventory</button>
+    <button @click="goToAddInventoryView">Add Inventory</button>
   </div>
 </template>
 
@@ -21,6 +21,12 @@ import InventoryList from '../components/InventoriesList.vue';
 export default {
   components: {
     InventoryList,
+  },
+  methods: {
+    goToAddInventoryView() {
+      this.$router.push({name: 'AddInventoryView'});
+    },
+    
   }
 }
 </script>

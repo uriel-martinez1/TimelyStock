@@ -20,13 +20,24 @@ export default {
     data() {
         return {
             editInventory: {
-                id: this.inventory.inventoryId,
-                userId: this.inventory.userId,
-                inventoryName: this.inventory.inventoryName,
+                id: 0,
+                userId: null,
+                inventoryName: "",
                 
             },
         };
     },
+
+    computed: {
+        initializedInventory() {
+            return {
+                id: this.inventory.inventoryId || 0,
+                userId: this.inventory.userId || null,
+                inventoryName: this.inventory.inventoryName || "",
+            };
+        },
+    },
+
     // this is for the lifecycle hook when the component is creating to grab the userId from the store
     
     methods: {
@@ -67,7 +78,7 @@ export default {
         },
 
         resetForm() {
-            this.newInventory = {
+            this.editInventory = {
                 userId: this.$store.state.user ? this.$store.state.user.userId : null,
                 inventoryName: "",
             };
