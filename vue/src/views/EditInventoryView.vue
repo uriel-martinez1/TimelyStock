@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Edit Inventory</h1>
-        <inventory-form v-bind:inventory="inventoryObj"/>
+        <inventory-form v-bind:inventory="inventory"/>
     </div>
 </template>
 
@@ -15,17 +15,15 @@ export default {
     },
     data() {
         return {
-            inventoryObj: {}
+            inventory: {}
         };
     },
-    created() {
-        // this is where we find the existing inventory item
-        let inventoryId = parseInt(this.$route.params.inventoryId);
-        //console.log(inventoryId);
-        if(inventoryId != 0) {
-            inventoriesServices.getInventoryDetail(inventoryId).then((response) =>{
-                console.log(response.data);
-                this.inventoryObj = response.data;
+
+    methods: {
+        getInventory(inventoryId){
+            inventoriesServices.getInventoryDetail(inventoryId)
+            .then(response =>{
+                this.inventory = response.data;
             })
             .catch((error) => {
                 if (error.response.status === 404) {
@@ -34,6 +32,24 @@ export default {
                 }
             });
         }
+    },
+    created() {
+        this.getInventory(this.$route.params.inventoryId);
+
+
+        // let inventoryId = parseInt(this.$route.params.inventoryId);
+        // if(inventoryId != 0) {
+        //     inventoriesServices.getInventoryDetail(inventoryId).then((response) =>{
+        //         console.log(response.data);
+        //         this.inventoryObj = response.data;
+        //     })
+        //     .catch((error) => {
+        //         if (error.response.status === 404) {
+        //             alert("Error getting card. This card may have been deleted or you have entered an invalid card id");
+        //             this.$router.push({name: 'home'});
+        //         }
+        //     });
+        // }
     }
 }
 

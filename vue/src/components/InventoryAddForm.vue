@@ -1,7 +1,9 @@
 <template>
-    <form v-on:submit.prevent="submitForm" class="inventoryAddForm">
-        <label for="inventoryName">Inventory Name:</label>
-        <input id="inventoryName" type="text" class="form-control" v-model="editInventory.inventoryName" />
+    <form v-on:submit.prevent="submitForm">
+        <div class="field">
+            <label for="name">Inventory Name: {{ editInventory.inventoryName }}</label>
+            <input type="text" id="name" name="name" v-model="editInventory.inventoryName" />
+        </div>
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
     </form>
@@ -12,24 +14,27 @@ import InventoriesServices from '../services/InventoriesServices';
 
 export default {
     props: {
-        inventoryObj: {
+        inventory: {
             type: Object,
-            default() {return {}}
+            required: true
         }
     },
 
     data() {
         return {
             editInventory: {
-                id: this.inventoryObj.inventoryId,
-                userId: this.inventoryObj.userId,
-                inventoryName: this.inventoryObj.inventoryName,
+                inventoryId: this.inventory.inventoryId,
+                userId: this.inventory.userId,
+                inventoryName: this.inventory.inventoryName,
                 
             },
         };
     },
 
     // this is for the lifecycle hook when the component is creating to grab the userId from the store
+    computed: {
+
+    },
     
     methods: {
         submitForm() {
@@ -68,18 +73,18 @@ export default {
             return true;
         },
         cancelForm() {
-            this.$router.push({name: 'home'});
+            this.$router.back();
         },
 
-        resetForm() {
-            this.editInventory = {
-                userId: this.$store.state.user ? this.$store.state.user.userId : null,
-                inventoryName: "",
-            };
-        },
-        refreshHome() {
-            location.reload ? location.reload() : (location = this.$router.push({ name: "home" }));
-        },
+        // resetForm() {
+        //     this.editInventory = {
+        //         userId: this.$store.state.user ? this.$store.state.user.userId : null,
+        //         inventoryName: "",
+        //     };
+        // },
+        // refreshHome() {
+        //     location.reload ? location.reload() : (location = this.$router.push({ name: "home" }));
+        // },
 
     }
 }

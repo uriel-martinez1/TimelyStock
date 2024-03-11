@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Add new inventory</h1>
-        <InventoryAddForm v-bind:inventory="inventoryObj"/>
+        <inventory-add-form v-bind:inventory="inventory" />
     </div>
 </template>
 
@@ -14,7 +14,11 @@ export default {
     },
     data() {
         return {
-            inventoryObj: {},
+            inventory: {
+                id: 0,
+                userId: 0,
+                name: '',
+            },
         };
     }
 };
