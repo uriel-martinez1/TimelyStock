@@ -1,12 +1,17 @@
 <template>
     <div>
-        <h1>This is inventory detail.</h1>
-        <!--We need to add the component her for list-->
+        <inventory-detail :id="$route.params.inventoryId" />
     </div>
 </template>
 
 <script>
+import InventoryDetail from '../components/InventoryDetail.vue';
 
+export default {
+    components: {
+        InventoryDetail
+    },
+};
 </script>
 
 <style>

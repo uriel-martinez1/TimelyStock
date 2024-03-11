@@ -1,7 +1,7 @@
 <template>
     <form v-on:submit.prevent="submitForm" class="inventoryAddForm">
         <label for="inventoryName">Inventory Name:</label>
-        <input id="inventoryName" type="text" class="form-control" v-model="editInventory.inventoryName" />
+        <input id="inventoryName" type="text" class="form-control" v-model="editInventory.name" />
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
     </form>
@@ -11,24 +11,22 @@
 import InventoriesServices from '../services/InventoriesServices';
 
 export default {
+    props: {
+        inventory: {
+            type: Object,
+            required: true
+        }
+    },
+
     data() {
         return {
             editInventory: {
-                id: 0,
-                inventoryName: "",
+                id: this.inventory.inventoryId,
+                userId: this.inventory.userId,
+                name: this.inventory.inventoryName,
                 
             },
         };
-    },
-
-    computed: {
-        initializedInventory() {
-            return {
-                id: this.inventory.inventoryId || 0,
-                userId: this.inventory.userId || null,
-                inventoryName: this.inventory.inventoryName || "",
-            };
-        },
     },
 
     // this is for the lifecycle hook when the component is creating to grab the userId from the store

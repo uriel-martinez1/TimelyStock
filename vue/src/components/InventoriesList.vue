@@ -22,7 +22,7 @@ export default {
     created() {
         inventoriesServices.getInventories()
         .then ((response) => {
-            console.log(response.data)
+            //console.log(response.data)
             this.inventories = response.data;
         });
     }

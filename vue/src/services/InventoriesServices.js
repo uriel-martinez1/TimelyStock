@@ -11,7 +11,7 @@ export default {
         return axios.get(`/inventories`);
     },
 
-    getInventory(inventoryId) {
+    getInventoryDetail(inventoryId) {
         return axios.get(`/inventories/${inventoryId}`)
     },
 

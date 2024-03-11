@@ -7,7 +7,8 @@ import LoginView from '../views/LoginView.vue';
 import LogoutView from '../views/LogoutView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import InventoryView from '../views/InventoryView.vue';
-import AddInvetoryView from '../views/AddInventoryView.vue';
+import AddInventoryView from '../views/AddInventoryView.vue';
+import EditInventoryView from '../views/EditInventoryView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -37,7 +38,15 @@ const routes = [
   {
     path: "/inventories/create",
     name: "AddInventoryView",
-    component: AddInvetoryView,
+    component: AddInventoryView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/inventories/:inventoryId/edit",
+    name: "EditInventoryView",
+    component: EditInventoryView,
     meta: {
       requiresAuth: true
     }
