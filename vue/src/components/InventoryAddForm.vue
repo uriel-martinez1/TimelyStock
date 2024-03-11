@@ -1,7 +1,7 @@
 <template>
     <form v-on:submit.prevent="submitForm" class="inventoryAddForm">
         <label for="inventoryName">Inventory Name:</label>
-        <input id="inventoryName" type="text" class="form-control" v-model="editInventory.name" />
+        <input id="inventoryName" type="text" class="form-control" v-model="editInventory.inventoryName" />
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
     </form>
@@ -12,18 +12,18 @@ import InventoriesServices from '../services/InventoriesServices';
 
 export default {
     props: {
-        inventory: {
+        inventoryObj: {
             type: Object,
-            required: true
+            default() {return {}}
         }
     },
 
     data() {
         return {
             editInventory: {
-                id: this.inventory.inventoryId,
-                userId: this.inventory.userId,
-                name: this.inventory.inventoryName,
+                id: this.inventoryObj.inventoryId,
+                userId: this.inventoryObj.userId,
+                inventoryName: this.inventoryObj.inventoryName,
                 
             },
         };
@@ -36,6 +36,7 @@ export default {
             if (!this.validateAddForm()) {
                 return;
             }
+            // create new inventory
             if (this.editInventory.id === 0) {
                 console.log(this.editInventory)
                 InventoriesServices.addInventory(this.editInventory)
@@ -45,6 +46,7 @@ export default {
                     }
                 })
             } else {
+                // edit existing inventory
                 InventoriesServices.updateInventory(this.editInventory)
                 .then(response => {
                     if(response.status === 200) {

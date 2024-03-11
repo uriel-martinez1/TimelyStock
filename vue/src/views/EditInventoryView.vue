@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Edit Inventory</h1>
-        <inventory-form v-bind:inventory="inventory"/>
+        <inventory-form v-bind:inventory="inventoryObj"/>
     </div>
 </template>
 
@@ -15,20 +15,17 @@ export default {
     },
     data() {
         return {
-            inventory: {
-                inventoryId: 0,
-                userId: 0,
-                inventoryName: ''
-            }
+            inventoryObj: {}
         };
     },
     created() {
         // this is where we find the existing inventory item
         let inventoryId = parseInt(this.$route.params.inventoryId);
-        console.log(inventoryId);
+        //console.log(inventoryId);
         if(inventoryId != 0) {
             inventoriesServices.getInventoryDetail(inventoryId).then((response) =>{
-                this.inventory = response.data;
+                console.log(response.data);
+                this.inventoryObj = response.data;
             })
             .catch((error) => {
                 if (error.response.status === 404) {
