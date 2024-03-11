@@ -2,7 +2,7 @@
     <form v-on:submit.prevent="submitForm" class="inventoryAddForm">
         <label for="inventoryName">Inventory Name:</label>
         <input id="inventoryName" type="text" class="form-control" v-model="editInventory.inventoryName" />
-        <button v-on:click.prevent="saveNewInventory" :disabled="validData">Save</button>
+        <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
     </form>
 </template>
@@ -11,17 +11,10 @@
 import InventoriesServices from '../services/InventoriesServices';
 
 export default {
-    props: {
-        inventory: {
-            type: Object,
-            required: true
-        }
-    },
     data() {
         return {
             editInventory: {
                 id: 0,
-                userId: null,
                 inventoryName: "",
                 
             },
@@ -46,6 +39,7 @@ export default {
                 return;
             }
             if (this.editInventory.id === 0) {
+                console.log(this.editInventory)
                 InventoriesServices.addInventory(this.editInventory)
                 .then(response => {
                     if(response.status === 201) {
@@ -64,7 +58,7 @@ export default {
         },
         validateAddForm() {
             let msg = "";
-            if(this.newInventory.inventoryName.length === 0) {
+            if(this.editInventory.inventoryName.length === 0) {
                 msg += "The new inventory must have a name. ";
             }
             if (msg.length > 0) {

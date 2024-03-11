@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Add new inventory</h1>
-        <InventoryAddForm/>
+        <InventoryAddForm />
     </div>
 </template>
 
