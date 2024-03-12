@@ -23,6 +23,16 @@ export default {
         editInventory() {
             this.$router.push({ name: "EditInventoryView",  params: {inventoryId: this.inventory.inventoryId}});
         },
+        deleteInventory() {
+            if (confirm("Are you sure you want to delete this inventory all associated items? This action cannot be undone.")) {
+                inventoriesServices.deleteInventory(this.inventory.inventoryId)
+                .then(response => {
+                    if (response.status === 200){
+                        this.$router.push({name: 'home'});
+                    }
+                })
+            }
+        }
     },
     created() {
         let numId = +this.id;

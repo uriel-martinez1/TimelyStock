@@ -1,7 +1,7 @@
 <template>
     <form v-on:submit.prevent="submitForm">
         <div class="field">
-            <label for="name">Inventory Name: {{ editInventory.inventoryName }}</label>
+            <label for="name">Inventory Name:</label>
             <input type="text" id="name" name="name" v-model="editInventory.inventoryName" />
         </div>
         <button>Save</button>
@@ -32,17 +32,19 @@ export default {
     },
 
     // this is for the lifecycle hook when the component is creating to grab the userId from the store
-    computed: {
-
-    },
+    // mounted() {
+    //     this.editInventory.inventoryId = this.inventory.inventoryId;
+    //     this.editInventory.userId = this.inventory.userId;
+    // },
     
     methods: {
         submitForm() {
             if (!this.validateAddForm()) {
                 return;
             }
-            // create new inventory
-            if (this.editInventory.id === 0) {
+            // create new inventory\
+            console.log(this.editInventory);
+            if (this.editInventory.inventoryId === undefined || this.editInventory.inventoryId === 0) {
                 console.log(this.editInventory)
                 InventoriesServices.addInventory(this.editInventory)
                 .then(response => {
@@ -52,6 +54,7 @@ export default {
                 })
             } else {
                 // edit existing inventory
+                console.log(this.editInventory);
                 InventoriesServices.updateInventory(this.editInventory)
                 .then(response => {
                     if(response.status === 200) {
@@ -70,6 +73,8 @@ export default {
                 this.$store.commit("SET_NOTIFICATION", msg);
                 return false;
             }
+            this.editInventory.inventoryId = this.inventory.inventoryId;
+            this.editInventory.userId = this.inventory.userId;
             return true;
         },
         cancelForm() {

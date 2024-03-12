@@ -22,5 +22,9 @@ export default {
     updateInventory(inventory) {
         return axios.put(`/inventories/${inventory.inventoryId}`, inventory);
     },
+
+    deleteInventory(inventoryId) {
+        return axios.delete(`/inventories/${inventoryId}`);
+    }
     
 }
