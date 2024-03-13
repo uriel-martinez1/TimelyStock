@@ -27,7 +27,7 @@ export default {
             })
             .catch((error) => {
                 if (error.response.status === 404) {
-                    alert("Error getting card. This card may have been deleted or you have entered an invalid card id");
+                    alert("Error getting inventory. This inventory may have been deleted or you have entered an invalid inventory id");
                     this.$router.push({name: 'home'});
                 }
             });

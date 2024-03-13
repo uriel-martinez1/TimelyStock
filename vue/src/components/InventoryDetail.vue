@@ -2,7 +2,7 @@
     <div>
         <h1>Current Inventory: {{ inventory.inventoryName }}</h1>
         <button v-on:click="editInventory">Edit</button>
-        <button>Delete</button>
+        <button v-on:click="deleteInventory">Delete</button>
     </div>
 </template>
 
@@ -24,13 +24,19 @@ export default {
             this.$router.push({ name: "EditInventoryView",  params: {inventoryId: this.inventory.inventoryId}});
         },
         deleteInventory() {
-            if (confirm("Are you sure you want to delete this inventory all associated items? This action cannot be undone.")) {
+            if (confirm("Are you sure you want to delete this inventory? This action cannot be undone.")) {
                 inventoriesServices.deleteInventory(this.inventory.inventoryId)
                 .then(response => {
-                    if (response.status === 200){
+                    if (response.status === 204){
                         this.$router.push({name: 'home'});
                     }
                 })
+                .catch((error) => {
+                if (error.response.status === 404) {
+                    alert("Error deleting this inventory. This inventory may have been deleted or you have entered an invalid inventory id");
+                    this.$router.push({name: 'home'});
+                    }
+                });
             }
         }
     },

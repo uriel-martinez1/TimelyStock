@@ -2,7 +2,7 @@
     <form v-on:submit.prevent="submitForm">
         <div class="field">
             <label for="name">Inventory Name:</label>
-            <input type="text" id="name" name="name" v-model="editInventory.inventoryName" />
+            <input type="text" id="name" name="name" :value="inventory.inventoryName" @change="changeName($event)" />
         </div>
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
@@ -42,7 +42,7 @@ export default {
             if (!this.validateAddForm()) {
                 return;
             }
-            // create new inventory\
+            // create new inventory
             console.log(this.editInventory);
             if (this.editInventory.inventoryId === undefined || this.editInventory.inventoryId === 0) {
                 console.log(this.editInventory)
@@ -63,6 +63,10 @@ export default {
                 })
             }
 
+        },
+
+        changeName(event) {
+            this.editInventory.inventoryName = event.target.value;
         },
         validateAddForm() {
             let msg = "";
