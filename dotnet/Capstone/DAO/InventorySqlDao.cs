@@ -174,6 +174,32 @@ namespace Capstone.DAO
             
         }
 
+        public int DeleteInventory(int inventoryId)
+        {
+            int numberOfRowsAffected = 0;
+
+            string sql = "DELETE FROM inventories WHERE inventory_id = @inventoryId;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+
+                    numberOfRowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occurred", ex);
+            }
+
+            return numberOfRowsAffected;
+        }
+
         public Inventory MapRowToInventory(SqlDataReader reader)
         {
             Inventory inventory = new Inventory();

@@ -53,9 +53,16 @@ namespace Capstone.Controllers
         [HttpPost()]
         public ActionResult<Inventory> AddInventory(Inventory inventory)
         {
-            User user = userDao.GetUserByUsername(User.Identity.Name);
-            Inventory added = inventoryDao.CreateInventory(inventory, user);
-            return Created($"/inventories/{added.InventoryId}", added);
+            try
+            {
+                User user = userDao.GetUserByUsername(User.Identity.Name);
+                Inventory added = inventoryDao.CreateInventory(inventory, user);
+                return Created($"/inventories/{added.InventoryId}", added);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPut("{inventoryId}")]
@@ -69,6 +76,20 @@ namespace Capstone.Controllers
             catch (System.Exception)
             {
                 return NotFound();
+            }
+        }
+
+        [HttpDelete("{inventoryId}")]
+        public ActionResult DeleteInventory(int inventoryId)
+        {
+            try
+            {
+                int confirmDelete = inventoryDao.DeleteInventory(inventoryId);
+                return confirmDelete != 0 ? NoContent() : NotFound();
+            }
+            catch (System.Exception)
+            {
+                return BadRequest("Does that inventory exist?");
             }
         }
     }

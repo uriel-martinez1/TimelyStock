@@ -11,5 +11,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
         Inventory CreateInventory(Inventory inventory, User user);
         Inventory GetInventoryById(int inventoryId);
         Inventory UpdateInventory(int id, Inventory inventoryToUpdate);
+        int DeleteInventory(int inventoryId);
     }
 }
