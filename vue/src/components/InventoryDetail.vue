@@ -3,6 +3,9 @@
         <h1>Current Inventory: {{ inventory.inventoryName }}</h1>
         <button v-on:click="editInventory">Edit</button>
         <button v-on:click="deleteInventory">Delete</button>
+
+        <!--This is the button that goes to the item add form-->
+        <button v-on:click="addItem">Add Item</button>
     </div>
 </template>
 
@@ -38,6 +41,10 @@ export default {
                     }
                 });
             }
+        },
+        addItem() {
+            console.log("This was clicked.")
+            this.$router.push({name: "AddItemView", params: {inventoryId: this.inventory.inventoryId}});
         }
     },
     created() {

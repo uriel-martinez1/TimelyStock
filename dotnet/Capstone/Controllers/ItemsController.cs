@@ -5,7 +5,7 @@ using Capstone.Models;
 
 namespace Capstone.Controllers
 {
-    [Route("[controller]")] // changed from items to [controller]
+    [Route("items")] 
     [ApiController]
     public class ItemsController : ControllerBase
     {
