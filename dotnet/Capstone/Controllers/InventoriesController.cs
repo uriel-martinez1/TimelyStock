@@ -13,11 +13,13 @@ namespace Capstone.Controllers
     {
         private readonly IInventoryDao inventoryDao;
         private readonly IUserDao userDao;
+        private readonly IItemDao itemDao;
 
-        public InventoriesController(IInventoryDao inventoryDao, IUserDao userDao)
+        public InventoriesController(IInventoryDao inventoryDao, IUserDao userDao, IItemDao itemDao)
         {
             this.inventoryDao = inventoryDao;
             this.userDao = userDao;
+            this.itemDao = itemDao;
         }
 
         [HttpGet()]
@@ -90,6 +92,20 @@ namespace Capstone.Controllers
             catch (System.Exception)
             {
                 return BadRequest("Does that inventory exist?");
+            }
+        }
+
+        [HttpGet("{inventoryId}/item")]
+        public ActionResult<List<Item>> GetItemsByInventoryId(int inventoryId)
+        {
+            try
+            {
+                List<Item> outputList = itemDao.GetItemsByInventoryId(inventoryId);
+                return Ok(outputList);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
             }
         }
     }

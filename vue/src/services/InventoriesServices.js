@@ -25,6 +25,7 @@ export default {
 
     deleteInventory(inventoryId) {
         return axios.delete(`/inventories/${inventoryId}`);
-    }
+    }, 
+    // do we need to add get items based on inventoryID
     
 }

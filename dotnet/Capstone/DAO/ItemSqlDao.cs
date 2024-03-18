@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Capstone.Exceptions;
 using System;
+using System.Xml.Linq;
 
 namespace Capstone.DAO
 {
@@ -40,6 +41,38 @@ namespace Capstone.DAO
             catch (SqlException e)
             {
                 throw new DaoException("SQL exception occurred.", e);
+            }
+            return output;
+        }
+
+        public List<Item> GetItemsByInventoryId(int inventoryId)
+        {
+            List<Item> output = new List<Item>();
+
+            string sql = "SELECT items.item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id FROM items " +
+                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
+                "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
+                "WHERE inventories.inventory_id = @inventoryId;";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Item item = MapRowToItem(reader);
+                        output.Add(item);
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                throw new DaoException("SQL exception occured.", e);
             }
             return output;
         }

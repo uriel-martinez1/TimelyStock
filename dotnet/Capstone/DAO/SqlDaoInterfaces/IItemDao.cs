@@ -8,5 +8,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
     {
         List<Item> GetItems();
         List<Item> GetItemsByName(string name, bool useWildCard);
+        List<Item> GetItemsByInventoryId(int inventoryId);
     }
 }

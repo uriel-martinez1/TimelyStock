@@ -16,7 +16,7 @@ namespace Capstone.Controllers
             this.itemDao = itemDao;
         }
 
-        [HttpGet("/items")]
+        [HttpGet()]
         public ActionResult<List<Item>> GetItems()
         {
             try
