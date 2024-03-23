@@ -10,10 +10,12 @@ namespace Capstone.DAO
     public class SupplierSqlDao : ISupplierDao
     {
         private readonly string ConnectionString;
+        private UserSqlDao userSqlDao;
 
         public SupplierSqlDao(string connectionString)
         {
             ConnectionString = connectionString;
+            userSqlDao = new UserSqlDao(connectionString);
         }
 
         public List<Supplier> GetSuppliers()
@@ -43,6 +45,40 @@ namespace Capstone.DAO
                 throw;
             }
             return output;
+        }
+
+        public List<Supplier> GetSuppliersByUserId(int userId)
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+
+            string sql = "SELECT DISTINCT suppliers.supplier_id, supplier_name FROM suppliers " +
+                "JOIN items ON suppliers.supplier_id = items.supplier_id " +
+                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
+                "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
+                "JOIN users ON inventories.user_id = users.user_id " +
+                "WHERE users.user_id = @userId;";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Supplier supplier = MapRowToSupplier(reader);
+                        suppliers.Add(supplier);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+            return suppliers;
         }
 
         public Supplier MapRowToSupplier(SqlDataReader reader)
