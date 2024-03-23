@@ -5,23 +5,27 @@ using Capstone.Models;
 
 namespace Capstone.Controllers
 {
-    [Route("[Controller]")]
+    [Route("categories")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryDao categoryDao;
+        private readonly IUserDao userDao;
 
-        public CategoriesController(ICategoryDao categoryDao)
+        public CategoriesController(ICategoryDao categoryDao, IUserDao userDao)
         {
             this.categoryDao = categoryDao;
+            this.userDao = userDao;
         }
 
-        [HttpGet("/categories")]
+        [HttpGet()]
         public ActionResult<List<Category>> GetCategories()
         {
             try
             {
-                List<Category> outputList = categoryDao.GetCategories();
+                User user = userDao.GetUserByUsername(User.Identity.Name);
+                int userId = user.UserId;
+                List<Category> outputList = categoryDao.GetCategoriesByUserId(userId);
                 return Ok(outputList);
             }
             catch (System.Exception)

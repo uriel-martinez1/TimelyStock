@@ -44,6 +44,40 @@ namespace Capstone.DAO
             return output;
         }
 
+        public List<Category> GetCategoriesByUserId(int userId)
+        {
+            List<Category> categories = new List<Category>();
+
+            string sql = "SELECT DISTINCT categories.category_id, category_name FROM categories " +
+                "JOIN items ON categories.category_id = items.category_id " +
+                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
+                "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
+                "JOIN users ON inventories.user_id = users.user_id " +
+                "WHERE users.user_id = @userId;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Category category = MapRowToCategory(reader);
+                        categories.Add(category);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+            return categories;
+        }
+
         public Category MapRowToCategory(SqlDataReader reader)
         {
             Category newCategory = new Category();

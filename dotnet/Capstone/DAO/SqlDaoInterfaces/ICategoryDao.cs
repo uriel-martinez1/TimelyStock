@@ -7,5 +7,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
     public interface ICategoryDao
     {
         List<Category> GetCategories();
+        List<Category> GetCategoriesByUserId(int userId);
     }
 }

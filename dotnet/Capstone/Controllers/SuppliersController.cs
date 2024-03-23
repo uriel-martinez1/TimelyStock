@@ -25,7 +25,7 @@ namespace Capstone.Controllers
             {
                 User user = userDao.GetUserByUsername(User.Identity.Name);
                 int userId = user.UserId;
-                List<Supplier> outputList = supplierDao.GetSuppliers();
+                List<Supplier> outputList = supplierDao.GetSuppliersByUserId(userId);
                 return Ok(outputList);
             }
             catch (System.Exception)
