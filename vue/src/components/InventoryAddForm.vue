@@ -30,12 +30,6 @@ export default {
             },
         };
     },
-
-    // this is for the lifecycle hook when the component is creating to grab the userId from the store
-    // mounted() {
-    //     this.editInventory.inventoryId = this.inventory.inventoryId;
-    //     this.editInventory.userId = this.inventory.userId;
-    // },
     
     methods: {
         submitForm() {
@@ -84,17 +78,6 @@ export default {
         cancelForm() {
             this.$router.back();
         },
-
-        // resetForm() {
-        //     this.editInventory = {
-        //         userId: this.$store.state.user ? this.$store.state.user.userId : null,
-        //         inventoryName: "",
-        //     };
-        // },
-        // refreshHome() {
-        //     location.reload ? location.reload() : (location = this.$router.push({ name: "home" }));
-        // },
-
     }
 }
 </script>
