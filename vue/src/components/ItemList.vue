@@ -22,6 +22,7 @@ export default{
         console.log(id)
         inventoriesServices.getItemsByInventoryId(id)
         .then ((response) =>{
+            console.log(response.data);
             this.items = response.data;
         });
     }

@@ -48,7 +48,7 @@
                 <label for="categoriess">Categories: </label>
                 <select id="categories" name="categories">
                     <option disabled selected>Select a category</option>
-                    <!--This is where we display all the existing supplier-->
+                    <!--This is where we display all the existing categories-->
                     <option v-for="category in categories" v-bind:value="category.categoryId" v-bind:key="category.categoryId">
                         {{ category.categoryName }}
                     </option>
@@ -63,8 +63,6 @@
 </template>
 
 <script>
-// we are going to import suppliers service 
-// we are going to import category service
 import categoriesService from "../services/CategoriesService";
 import supplierServices from "../services/SuppliersServices";
 
