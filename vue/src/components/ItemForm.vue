@@ -1,37 +1,61 @@
 <template>
     <form>
         <div class="field">
-            <label for="name">Item Name:</label>
-            <input type="text" id="name" name="name" v-bind:value="item.itemName" />
-            
-            <label>Product Url: </label>
-            <input type="url" id="url" name="url" v-bind:value="item.itemUrl" />
+            <div id="itemName">
+                <label for="name">Item Name:</label>
+                <input type="text" id="name" name="name" v-bind:value="item.itemName" />
+            </div>
 
-            <label>SKU: </label>
-            <input type="text" id="sku" name="sku" v-bind:value="item.itemSku" />
+            <div id="productUrl">
+                <label>Product Url: </label>
+                <input type="url" id="url" name="url" v-bind:value="item.itemUrl" />
+            </div>
 
-            <label>Price: </label>
-            <input type="text" id="price" name="price" v-bind:value="item.itemPrice" />
+            <div id="itemSku">
+                <label>SKU: </label>
+                <input type="text" id="sku" name="sku" v-bind:value="item.itemSku" />
+            </div>
 
-            <label>Available Quantity: </label>
-            <input type="text" id="available_quantity" name="available_quantity" v-bind:value="item.itemAvailableQty" />
-            <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
+            <div>
+                <label>Price: </label>
+                <input type="text" id="price" name="price" v-bind:value="item.itemPrice" />
+            </div>
 
-            <label>Reorder Quantity: </label>
-            <input type="text" id="reorder_quantity" name="reorder_quantity" v-bind:value="item.itemReorderQty" />
+            <div>
+                <label>Available Quantity: </label>
+                <input type="text" id="available_quantity" name="available_quantity" v-bind:value="item.itemAvailableQty" />
+                <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
+            </div>
 
-            <label for="suppliers">Supplier: </label>
-            <select id="suppliers" name="suppliers" v-for="supplier in suppliers" v-bind:key="supplier.supplierId">
-                <!--We will need to run a loop to grab all the existing suppliers - connect it to the get method in the back that aligns to get suppliers in the backend route-->
-                <option value="{{ supplier.supplierName }}">{{ supplier.supplierName }}</option>
-                <option value="add">Add new supplier</option>
-            </select>
+            <div>
+                <label>Reorder Quantity: </label>
+                <input type="text" id="reorder_quantity" name="reorder_quantity" v-bind:value="item.itemReorderQty" />
+            </div>
 
-            <label for="categoriess">Categories: </label>
-            <select id="categories" name="categories">
-                <option value="Add">Add new category</option>
-                <!--We will need to run a loop to grab all the existing categories - connect it to the get method in the back that aligns to get categories in the backend route-->
-            </select>
+            <div>
+                <label for="suppliers">Supplier: </label>
+                <select id="suppliers" name="suppliers">
+                    <option disabled selected>Select a supplier</option>
+                    <!--This is where we display all the existing supplier-->
+                    <option v-for="supplier in suppliers" v-bind:value="supplier.supplierId" v-bind:key="supplier.supplierId">
+                        {{ supplier.supplierName }}
+                    </option>
+                    <option value="add">Add new supplier</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="categoriess">Categories: </label>
+                <select id="categories" name="categories">
+                    <option disabled selected>Select a category</option>
+                    <!--This is where we display all the existing supplier-->
+                    <option v-for="category in categories" v-bind:value="category.categoryId" v-bind:key="category.categoryId">
+                        {{ category.categoryName }}
+                    </option>
+                    <option value="Add">Add new category</option>
+                </select>
+            </div>
+    
         </div>
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
@@ -42,6 +66,7 @@
 // we are going to import suppliers service 
 // we are going to import category service
 import categoriesService from "../services/CategoriesService";
+import supplierServices from "../services/SuppliersServices";
 
 export default {
     props: {
@@ -49,10 +74,6 @@ export default {
             type: Object,
             required: true
         },
-        supplier: {
-            type: Object,
-            required: true
-        }
     },
 
     data() {
@@ -67,10 +88,38 @@ export default {
                 itemReorderQty: this.item.itemReorderQty,
                 itemCategory: this.item.itemCategory,
                 itemSupplier: this.item.itemSupplier,
+            },
+            suppliers: [],
+            categories: []
+
+        }
+    },
+    mounted() {
+        // fetch suppliers when the component is mounted
+        this.fetchSuppliers();
+        this.fetchCategories();
+    },
+
+    methods: {
+        async fetchSuppliers() {
+            try {
+                const response = await supplierServices.getSuppliers();
+                console.log(response.data);
+                this.suppliers = response.data;
+            } catch (error) {
+                console.error("Error fetching suppliers:", error);
+            }
+        },
+        async fetchCategories() {
+            try {
+                const response = await categoriesService.getCategories();
+                console.log(response.data);
+                this.categories = response.data;
+            } catch (error) {
+                console.error("Error fetching categories:", error);
             }
         }
     }
-
 }
 </script>
 
