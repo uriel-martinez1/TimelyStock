@@ -105,17 +105,47 @@ namespace Capstone.DAO
                     }
                 }
             }
-            catch (Exception)
+            catch (SqlException ex)
             {
-
-                throw;
+                throw new DaoException("SQl exception occured", ex);
             }
             return output;
         }
 
-        public Item CreateItem(Item item, User user)
+        public Item CreateItem(Item item)
         {
-            throw new NotImplementedException();
+            Item newItem = new Item();
+
+            string sql = "INSERT INTO items(item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id) " +
+                "OUTPUT inserted.item_id " +
+                "VALUES (@itemName, @productUrl, @skuNumber, @price, @availableQty, @reorderQty, @categoryId, @supplierId)";
+
+            try
+            {
+                int newItemId;
+
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@itemName", item.ItemName);
+                    cmd.Parameters.AddWithValue("@productUrl", item.ProductUrl);
+                    cmd.Parameters.AddWithValue("@skuNumber", item.SkuItemNumber);
+                    cmd.Parameters.AddWithValue("@price", item.Price);
+                    cmd.Parameters.AddWithValue("@availableQty", item.AvailableQuantity);
+                    cmd.Parameters.AddWithValue("@reorderQty", item.ReorderQuantity);
+                    cmd.Parameters.AddWithValue("@categoryId", item.CategoryId);
+                    cmd.Parameters.AddWithValue("@supplierId", item.SupplierId);
+                    newItemId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+                newItem = GetItemById(newItemId);
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL Exception occured", ex);
+            }
+            return newItem;
         }
 
         public Item GetItemById(int itemId)
