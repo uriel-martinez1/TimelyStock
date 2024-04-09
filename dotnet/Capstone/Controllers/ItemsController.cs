@@ -10,10 +10,12 @@ namespace Capstone.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IItemDao itemDao;
+        private readonly IUserDao userDao;
         
-        public ItemsController(IItemDao itemDao)
+        public ItemsController(IItemDao itemDao, IUserDao userDao)
         {
             this.itemDao = itemDao;
+            this.userDao = userDao;
         }
 
         [HttpGet()]
@@ -37,6 +39,20 @@ namespace Capstone.Controllers
             {
                 List<Item> items = itemDao.GetItemsByName(name, useWildCard);
                 return Ok(items);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost()]
+        public ActionResult<Item> AddItem(Item item)
+        {
+            try
+            {
+                Item added = itemDao.CreateItem(item);
+                return Created($"/items/{added.ItemId}", added);
             }
             catch (System.Exception)
             {
