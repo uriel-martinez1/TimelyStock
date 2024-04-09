@@ -113,6 +113,41 @@ namespace Capstone.DAO
             return output;
         }
 
+        public Item CreateItem(Item item, User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Item GetItemById(int itemId)
+        {
+            Item item = new Item();
+
+            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id " +
+                "FROM items " +
+                "WHERE item_id = @itemId;";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@itemId", itemId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        item = MapRowToItem(reader);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+            return item;
+        }
+
         public Item MapRowToItem(SqlDataReader reader)
         {
             Item newItem = new Item();
