@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form v-on:submit.prevent="submitForm">
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
@@ -65,6 +65,7 @@
 <script>
 import categoriesService from "../services/CategoriesService";
 import supplierServices from "../services/SuppliersServices";
+import itemService from "../services/ItemService";
 
 export default {
     props: {
@@ -116,7 +117,23 @@ export default {
             } catch (error) {
                 console.error("Error fetching categories:", error);
             }
-        }
+        },
+        submitForm(){
+            // create new item
+            console.log(this.editItem);
+            if (this.editItem.itemId === undefined || this.editItem.itemId === 0){
+                console.log(this.editItem)
+                // we should be able to grab the inventory id from the url 
+                itemService.addItem(this.editItem, this.$route.params.inventoryId)
+                .then(response =>{
+                    if(response.status === 201){
+                        // if successful, lets go back to the inventory view
+                        this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
+                    }
+                })
+            }
+        },
+
     }
 }
 </script>

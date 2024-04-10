@@ -57,9 +57,18 @@ namespace Capstone.Controllers
                 // first we create the item
                 Item added = itemDao.CreateItem(item);
                 // then we need to link the new item to the inventory it is in
-                itemDao.LinkItemInventory(inventoryId, added.ItemId);
+                bool linkSuccess = itemDao.LinkItemInventory(inventoryId, added.ItemId);
                 // then we return created
-                return Created($"/items/{added.ItemId}", added);
+                if (linkSuccess)
+                {
+                    // if successful, return created
+                    return Created($"/items/{added.ItemId}", added);
+                }
+                else
+                {
+                    // lets return something if the item does not properly link
+                    return BadRequest("Failed to link item to inventory.");
+                }
             }
             catch (System.Exception)
             {

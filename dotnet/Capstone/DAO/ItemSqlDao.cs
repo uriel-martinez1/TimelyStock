@@ -178,7 +178,7 @@ namespace Capstone.DAO
             return item;
         }
 
-        public void LinkItemInventory(int inventoryId, int itemId)
+        public bool LinkItemInventory(int inventoryId, int itemId)
         {
             string sql = "INSERT INTO inventory_items(inventory_id, item_id) " +
                 "VALUES (@inventoryId, @itemId);";
@@ -192,7 +192,8 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
                     cmd.Parameters.AddWithValue("@itemId", itemId);
 
-                    cmd.ExecuteNonQuery();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    return rowsAffected > 0;
                 }
             }
             catch (SqlException ex)

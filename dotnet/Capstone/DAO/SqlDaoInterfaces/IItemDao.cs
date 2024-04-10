@@ -13,6 +13,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
         Item GetItemById(int itemId);
 
         //link method that links the newly created item to the existing inventory
-        void LinkItemInventory(int inventoryId, int itemId);
+        bool LinkItemInventory(int inventoryId, int itemId);
     }
 }
