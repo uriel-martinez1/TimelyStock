@@ -7,6 +7,15 @@ SELECT * FROM items
 
 SELECT * FROM inventory_items
 
+INSERT INTO items(item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id)
+OUTPUT inserted.item_id
+VALUES (@itemName, @productUrl, @skuNumber, @price, @availableQty, @reorderQty, @categoryId, @supplierId)
+
+-- we might need a sql statement that will join items and suppliers to grab its id
+SELECT suppliers.supplier_id from suppliers
+JOIN items ON suppliers.supplier_id = items.supplier_id
+WHERE item_id = 100;
+
 -- we need to update the cross table between the items and invetory table to connect or link the newly created items
 -- item_id = 107
 -- inventory_id = 2 

@@ -178,6 +178,29 @@ namespace Capstone.DAO
             return item;
         }
 
+        public void LinkItemInventory(int inventoryId, int itemId)
+        {
+            string sql = "INSERT INTO inventory_items(inventory_id, item_id) " +
+                "VALUES (@inventoryId, @itemId);";
+
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+                    cmd.Parameters.AddWithValue("@itemId", itemId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception has ocurred: ", ex);
+            }
+        }
+
         public Item MapRowToItem(SqlDataReader reader)
         {
             Item newItem = new Item();

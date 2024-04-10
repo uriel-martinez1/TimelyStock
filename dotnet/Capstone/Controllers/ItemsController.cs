@@ -11,11 +11,13 @@ namespace Capstone.Controllers
     {
         private readonly IItemDao itemDao;
         private readonly IUserDao userDao;
+        private readonly IInventoryDao inventoryDao;
         
-        public ItemsController(IItemDao itemDao, IUserDao userDao)
+        public ItemsController(IItemDao itemDao, IUserDao userDao, IInventoryDao inventoryDao)
         {
             this.itemDao = itemDao;
             this.userDao = userDao;
+            this.inventoryDao = inventoryDao;
         }
 
         [HttpGet()]
@@ -47,11 +49,16 @@ namespace Capstone.Controllers
         }
 
         [HttpPost()]
-        public ActionResult<Item> AddItem(Item item)
+        // we are going to need to send the inventory id from the route here
+        public ActionResult<Item> AddItem(Item item, int inventoryId)
         {
             try
             {
+                // first we create the item
                 Item added = itemDao.CreateItem(item);
+                // then we need to link the new item to the inventory it is in
+                itemDao.LinkItemInventory(inventoryId, added.ItemId);
+                // then we return created
                 return Created($"/items/{added.ItemId}", added);
             }
             catch (System.Exception)
