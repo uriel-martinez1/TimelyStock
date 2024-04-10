@@ -7,6 +7,6 @@ const http = axios.create({
 export default {
     // I am not sure about this?
     addItem(item, inventoryId){
-        return axios.post(`/items`, item, inventoryId);
+        return axios.post(`/items/${inventoryId}`, item);
     },
 }

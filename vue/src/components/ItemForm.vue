@@ -3,38 +3,38 @@
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
-                <input type="text" id="name" name="name" v-bind:value="item.itemName" />
+                <input type="text" id="name" name="name" v-model="updatedItem.itemName"/>
             </div>
 
             <div id="productUrl">
                 <label>Product Url: </label>
-                <input type="url" id="url" name="url" v-bind:value="item.itemUrl" />
+                <input type="url" id="url" name="url" v-model="updatedItem.ProductUrl" />
             </div>
 
             <div id="itemSku">
                 <label>SKU: </label>
-                <input type="text" id="sku" name="sku" v-bind:value="item.itemSku" />
+                <input type="text" id="sku" name="sku" v-model="updatedItem.SkuItemNumber" />
             </div>
 
             <div>
                 <label>Price: </label>
-                <input type="text" id="price" name="price" v-bind:value="item.itemPrice" />
+                <input type="text" id="price" name="price" v-model="updatedItem.price" />
             </div>
 
             <div>
                 <label>Available Quantity: </label>
-                <input type="text" id="available_quantity" name="available_quantity" v-bind:value="item.itemAvailableQty" />
+                <input type="text" id="available_quantity" name="available_quantity" v-model="updatedItem.AvailableQuantity" />
                 <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
             </div>
 
             <div>
                 <label>Reorder Quantity: </label>
-                <input type="text" id="reorder_quantity" name="reorder_quantity" v-bind:value="item.itemReorderQty" />
+                <input type="text" id="reorder_quantity" name="reorder_quantity" v-model="updatedItem.ReorderQuantity" />
             </div>
 
             <div>
                 <label for="suppliers">Supplier: </label>
-                <select id="suppliers" name="suppliers">
+                <select id="suppliers" name="suppliers" v-model="updatedItem.SupplierId">
                     <option disabled selected>Select a supplier</option>
                     <!--This is where we display all the existing supplier-->
                     <option v-for="supplier in suppliers" v-bind:value="supplier.supplierId" v-bind:key="supplier.supplierId">
@@ -46,7 +46,7 @@
 
             <div>
                 <label for="categoriess">Categories: </label>
-                <select id="categories" name="categories">
+                <select id="categories" name="categories" v-model="updatedItem.CategoryId">
                     <option disabled selected>Select a category</option>
                     <!--This is where we display all the existing categories-->
                     <option v-for="category in categories" v-bind:value="category.categoryId" v-bind:key="category.categoryId">
@@ -88,6 +88,7 @@ export default {
                 itemCategory: this.item.itemCategory,
                 itemSupplier: this.item.itemSupplier,
             },
+            updatedItem: {},
             suppliers: [],
             categories: []
 
@@ -120,11 +121,11 @@ export default {
         },
         submitForm(){
             // create new item
-            console.log(this.editItem);
+            console.log(this.updatedItem);
             if (this.editItem.itemId === undefined || this.editItem.itemId === 0){
-                console.log(this.editItem)
+                console.log(this.updatedItem)
                 // we should be able to grab the inventory id from the url 
-                itemService.addItem(this.editItem, this.$route.params.inventoryId)
+                itemService.addItem(this.updatedItem, this.$route.params.inventoryId)
                 .then(response =>{
                     if(response.status === 201){
                         // if successful, lets go back to the inventory view

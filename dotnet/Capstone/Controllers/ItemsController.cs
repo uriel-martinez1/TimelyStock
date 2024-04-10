@@ -48,7 +48,7 @@ namespace Capstone.Controllers
             }
         }
 
-        [HttpPost()]
+        [HttpPost("{inventoryId}")]
         // we are going to need to send the inventory id from the route here
         public ActionResult<Item> AddItem(Item item, int inventoryId)
         {
