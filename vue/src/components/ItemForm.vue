@@ -40,7 +40,13 @@
                     <option v-for="supplier in suppliers" v-bind:value="supplier.supplierId" v-bind:key="supplier.supplierId">
                         {{ supplier.supplierName }}
                     </option>
-                    <option value="add">Add new supplier</option>
+                    <option value="add" v-if="!showAddSupplier" v-on:select="showAddSupplier = true">Add new supplier</option>
+                    <form v-if="showAddSupplier">
+                        <label for="supplierName">Supplier Name: </label>
+                        <input type="text" id="supplierName" name="supplierName" v-model="newSupplier.name"/>
+                        <button v-on:click.prevent="saveNewSupplier" :disabled="validate">Save</button>
+                        <button v-on:click="resetAddForm">Cancel</button>
+                    </form>
                 </select>
             </div>
 
@@ -88,11 +94,18 @@ export default {
                 itemCategory: this.item.itemCategory,
                 itemSupplier: this.item.itemSupplier,
             },
+            showAddSupplier: false,
             updatedItem: {},
             suppliers: [],
-            categories: []
+            categories: [],
+            newSupplier: {
+                name: "",
+            },
+            newCategory: {
+                name: "",
+            }
 
-        }
+        };
     },
     mounted() {
         // fetch suppliers when the component is mounted
@@ -134,6 +147,21 @@ export default {
                 })
             }
         },
+        saveNewSupplier() {
+            // we need the supplier service here for create supplier
+            //supplierService
+            //.addSupplier(this.newSupplier)
+            //.then((response) =>{
+                //this.fetchSuppliers();
+                //this.resetAddForm();
+            //})
+        },
+        resetAddForm() {
+            this.showAddSupplier = false;
+            this.newSupplier = {
+                name: "",
+            };
+        }
 
     }
 }
