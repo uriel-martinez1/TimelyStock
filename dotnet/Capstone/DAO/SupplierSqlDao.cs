@@ -81,6 +81,65 @@ namespace Capstone.DAO
             return suppliers;
         }
 
+        public Supplier CreateSupplier(Supplier supplier)
+        {
+            Supplier newSupplier = new Supplier();
+
+            string sql = "INSERT INTO suppliers(supplier_name) " +
+                "OUTPUT inserted.supplier_id " +
+                "VALUES (@supplierName)";
+
+            try
+            {
+                int newSupplierId;
+
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@supplierName", supplier.SupplierName);
+                    newSupplierId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+                newSupplier = GetSupplierById(newSupplierId);
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL Exception ocurred", ex);
+            }
+            return newSupplier;
+        }
+
+        public Supplier GetSupplierById(int supplierId)
+        {
+            Supplier supplier = new Supplier();
+
+            string sql = "SELECT supplier_id,supplier_name " +
+                "FROM suppliers " +
+                "WHERE supplier_id = @supplierId";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@supplierId", supplierId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        supplier = MapRowToSupplier(reader);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL Exception occured", ex);
+            }
+            return supplier;
+        }
+
         public Supplier MapRowToSupplier(SqlDataReader reader)
         {
             Supplier newSupplier = new Supplier();

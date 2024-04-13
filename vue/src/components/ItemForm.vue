@@ -149,12 +149,13 @@ export default {
         },
         saveNewSupplier() {
             // we need the supplier service here for create supplier
-            //supplierService
-            //.addSupplier(this.newSupplier)
-            //.then((response) =>{
-                //this.fetchSuppliers();
-                //this.resetAddForm();
-            //})
+            supplierServices
+            .addSupplier(this.newSupplier)
+            .then((response) =>{
+                console.log(response);
+                this.fetchSuppliers();
+                this.resetAddForm();
+            })
         },
         resetAddForm() {
             this.showAddSupplier = false;

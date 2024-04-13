@@ -33,5 +33,20 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost()]
+        public ActionResult<Supplier> AddSupplier(Supplier supplier)
+        {
+            try
+            {
+                Supplier added = supplierDao.CreateSupplier(supplier);
+                return Created($"/suppliers/{added.SupplierId}", added);
+
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }
