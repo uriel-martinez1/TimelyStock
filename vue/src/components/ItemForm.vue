@@ -34,21 +34,23 @@
 
             <div>
                 <label for="suppliers">Supplier: </label>
-                <select id="suppliers" name="suppliers" v-model="updatedItem.SupplierId">
+                <select id="suppliers" name="suppliers" v-model="updatedItem.SupplierId" v-on:change="handleSupplierChange">
                     <option disabled selected>Select a supplier</option>
                     <!--This is where we display all the existing supplier-->
                     <option v-for="supplier in suppliers" v-bind:value="supplier.supplierId" v-bind:key="supplier.supplierId">
                         {{ supplier.supplierName }}
                     </option>
-                    <option value="add" v-if="!showAddSupplier" v-on:select="showAddSupplier = true">Add new supplier</option>
-                    <form v-if="showAddSupplier">
-                        <label for="supplierName">Supplier Name: </label>
-                        <input type="text" id="supplierName" name="supplierName" v-model="newSupplier.name"/>
-                        <button v-on:click.prevent="saveNewSupplier" :disabled="validate">Save</button>
-                        <button v-on:click="resetAddForm">Cancel</button>
-                    </form>
+                    <!--If the user wants to add a new supplier, then they must select the add new supplier dropdown-->
+                    <option value="add">Add new supplier</option>
                 </select>
             </div>
+            <!--This is the form for the new supplier-->
+            <form v-if="showAddSupplier">
+                <label for="supplierName">Supplier Name: </label>
+                <input type="text" id="supplierName" name="supplierName" v-model="newSupplier.SupplierName"/>
+                <button v-on:click.prevent="saveNewSupplier" :disabled="validate">Save</button>
+                <button v-on:click="resetAddForm">Cancel</button>
+            </form>
 
             <div>
                 <label for="categoriess">Categories: </label>
@@ -99,7 +101,7 @@ export default {
             suppliers: [],
             categories: [],
             newSupplier: {
-                name: "",
+                SupplierName: "",
             },
             newCategory: {
                 name: "",
@@ -160,12 +162,17 @@ export default {
         resetAddForm() {
             this.showAddSupplier = false;
             this.newSupplier = {
-                name: "",
+                SupplierName: "",
             };
-        }
-
-    }
-}
+        },
+        // this will handle the showing of the form
+        handleSupplierChange(event) {
+            if (event.target.value === "add") {
+                this.showAddSupplier = true;
+            }
+        },
+    },
+};
 </script>
 
 
