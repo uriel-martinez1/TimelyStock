@@ -19,7 +19,7 @@ namespace Capstone.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<List<Supplier>> GetSuppliers()
+        public ActionResult<List<Supplier>> GetSuppliersByUserId()
         {
             try
             {

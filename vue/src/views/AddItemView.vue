@@ -16,14 +16,15 @@ export default {
     data() {
         return {
             item: {
-                id: 0,
-                name: '',
-                sku: 0,
-                price: 0,
-                availableQuantity: 0,
-                reorderQuantity: 0,
-                categoryId: 0,
-                supplierId: 0
+                ItemId: 0,
+                ItemName: '',
+                ProductUrl: 0,
+                SkuItemNumber: 0,
+                Price: 0,
+                AvailableQuantity: 0,
+                ReorderQuantity: 0,
+                CategoryId: 0,
+                SupplierId: 0
             },
 
             supplier: {

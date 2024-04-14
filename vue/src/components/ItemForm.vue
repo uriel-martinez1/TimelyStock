@@ -3,7 +3,7 @@
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
-                <input type="text" id="name" name="name" v-model="updatedItem.itemName"/>
+                <input type="text" id="name" name="name" v-model="updatedItem.ItemName"/>
             </div>
 
             <div id="productUrl">
@@ -18,7 +18,7 @@
 
             <div>
                 <label>Price: </label>
-                <input type="text" id="price" name="price" v-model="updatedItem.price" />
+                <input type="text" id="price" name="price" v-model="updatedItem.Price" />
             </div>
 
             <div>
@@ -86,15 +86,15 @@ export default {
     data() {
         return {
             editItem: {
-                itemId: this.item.itemId,
-                itemName: this.item.itemName,
-                itemUrl: this.item.itemUrl,
-                itemSku: this.item.itemSku,
-                itemPrice: this.item.itemPrice,
-                itemAvailableQty: this.item.itemAvailableQty,
-                itemReorderQty: this.item.itemReorderQty,
-                itemCategory: this.item.itemCategory,
-                itemSupplier: this.item.itemSupplier,
+                itemId: this.item.ItemId,
+                itemName: this.item.ItemName,
+                ProductUrl: this.item.ProductUrl,
+                SkuItemNumber: this.item.SkuItemNumber,
+                Price: this.item.Price,
+                AvailableQuantity: this.item.AvailableQuantity,
+                ReorderQuantity: this.item.ReorderQuantity,
+                CategoryId: this.item.CategoryId,
+                SupplierId: this.item.SupplierId,
             },
             showAddSupplier: false,
             updatedItem: {},
@@ -155,6 +155,8 @@ export default {
             .addSupplier(this.newSupplier)
             .then((response) =>{
                 console.log(response);
+                // Update the updatedItem.SupplierId with the newly created Supplier Id 
+                this.updatedItem.SupplierId = response.data.supplierId;
                 this.fetchSuppliers();
                 this.resetAddForm();
             })
