@@ -225,7 +225,7 @@ namespace Capstone.DAO
             }
             else
             {
-                newItem.SkuItemNumber = Convert.ToInt32(reader["sku_item_number"]);
+                newItem.SkuItemNumber = Convert.ToString(reader["sku_item_number"]);
             }
 
             if (reader["price"] is DBNull)    // Nullable value
