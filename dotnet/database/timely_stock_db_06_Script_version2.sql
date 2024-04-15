@@ -21,6 +21,7 @@ CREATE TABLE users
 	password_hash VARCHAR(200) NOT NULL,
 	salt VARCHAR(200) NOT NULL,
 	user_role VARCHAR(50) NOT NULL,
+	email_address VARCHAR(200) NOT NULL,
 
 	-- Primary Key
 	CONSTRAINT [PK_users] PRIMARY KEY(user_id),
@@ -78,8 +79,8 @@ CREATE TABLE items
 	item_id INT IDENTITY(100,1),
 	item_name NVARCHAR(200) NOT NULL,
 	product_url VARCHAR(2083) NULL,
-	sku_item_number INT NULL,
-	price DECIMAL NULL,
+	sku_item_number VARCHAR(80) NULL,
+	price DECIMAL(12,2) NULL,
 	available_quantity INT NOT NULL,
 	reorder_point INT NOT NULL,
 	reorder_quantity INT NOT NULL,
