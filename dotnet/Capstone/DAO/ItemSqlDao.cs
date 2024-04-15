@@ -21,7 +21,8 @@ namespace Capstone.DAO
         {
             List<Item> output = new List<Item>();
 
-            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id FROM items;";
+            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id " +
+                "FROM items;";
 
             try
             {
@@ -49,7 +50,7 @@ namespace Capstone.DAO
         {
             List<Item> output = new List<Item>();
 
-            string sql = "SELECT items.item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id FROM items " +
+            string sql = "SELECT items.item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id FROM items " +
                 "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
                 "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
                 "WHERE inventories.inventory_id = @inventoryId;";
@@ -86,7 +87,7 @@ namespace Capstone.DAO
                 name = "%" + name + "%";
             }
 
-            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id FROM items " +
+            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id FROM items " +
                 "WHERE item_name LIKE @name;";
 
             try
@@ -116,9 +117,9 @@ namespace Capstone.DAO
         {
             Item newItem = new Item();
 
-            string sql = "INSERT INTO items(item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id) " +
+            string sql = "INSERT INTO items(item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id) " +
                 "OUTPUT inserted.item_id " +
-                "VALUES (@itemName, @productUrl, @skuNumber, @price, @availableQty, @reorderQty, @categoryId, @supplierId)";
+                "VALUES (@itemName, @productUrl, @skuNumber, @price, @availableQty, @reorderPoint, @reorderQty, @categoryId, @supplierId)";
 
             try
             {
@@ -133,6 +134,7 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@skuNumber", item.SkuItemNumber);
                     cmd.Parameters.AddWithValue("@price", item.Price);
                     cmd.Parameters.AddWithValue("@availableQty", item.AvailableQuantity);
+                    cmd.Parameters.AddWithValue("@reorderPoint", item.ReorderPoint);
                     cmd.Parameters.AddWithValue("@reorderQty", item.ReorderQuantity);
                     cmd.Parameters.AddWithValue("@categoryId", item.CategoryId);
                     cmd.Parameters.AddWithValue("@supplierId", item.SupplierId);
@@ -152,7 +154,7 @@ namespace Capstone.DAO
         {
             Item item = new Item();
 
-            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_quantity, category_id, supplier_id " +
+            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id " +
                 "FROM items " +
                 "WHERE item_id = @itemId;";
 
@@ -236,6 +238,7 @@ namespace Capstone.DAO
             }
 
             newItem.AvailableQuantity = Convert.ToInt32(reader["available_quantity"]);
+            newItem.ReorderPoint = Convert.ToInt32(reader["reorder_point"]);
             newItem.ReorderQuantity = Convert.ToInt32(reader["reorder_quantity"]);
             newItem.CategoryId = Convert.ToInt32(reader["category_id"]); 
             newItem.SupplierId = Convert.ToInt32(reader["supplier_id"]);

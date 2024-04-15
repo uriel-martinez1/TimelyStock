@@ -40,7 +40,7 @@ CREATE TABLE inventories
 	CONSTRAINT [PK_inventories] PRIMARY KEY(inventory_id),
 
 	-- All inventory names need to be unique
-	CONSTRAINT [UQ_name] UNIQUE(inventory_name)
+	CONSTRAINT [UQ_inventory_name] UNIQUE(inventory_name)
 );
 
 -- Create the categories table
@@ -54,7 +54,7 @@ CREATE TABLE categories
 	CONSTRAINT [PK_categories] PRIMARY KEY(category_id),
 
 	-- All category names need to be unique
-	CONSTRAINT [UQ_name] UNIQUE(category_name)
+	CONSTRAINT [UQ_category_name] UNIQUE(category_name)
 );
 
 -- Create the suppliers table
@@ -68,7 +68,7 @@ CREATE TABLE suppliers
 	CONSTRAINT [PK_suppliers] PRIMARY KEY(supplier_id),
 
 	-- All supplier names need to be unique
-	CONSTRAINT [UQ_name] UNIQUE(supplier_name)
+	CONSTRAINT [UQ_supplier_name] UNIQUE(supplier_name)
 );
 
 
@@ -104,5 +104,5 @@ CREATE TABLE inventory_items
 ALTER TABLE inventory_items ADD CONSTRAINT FK_inventory_items_inventories FOREIGN KEY(inventory_id) REFERENCES inventories(inventory_id);
 ALTER TABLE inventory_items ADD CONSTRAINT FK_inventory_items_items FOREIGN KEY(item_id) REFERENCES items(item_id);
 
---COMMIT;
-ROLLBACK TRANSACTION;
+COMMIT;
+--ROLLBACK TRANSACTION;

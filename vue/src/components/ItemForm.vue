@@ -28,6 +28,12 @@
             </div>
 
             <div>
+                <label>Reorder Point: </label>
+                <input type="text" id="reorder_point" name="reorder_point" v-model="updatedItem.AvailableQuantity" />
+                <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
+            </div>
+
+            <div>
                 <label>Reorder Quantity: </label>
                 <input type="text" id="reorder_quantity" name="reorder_quantity" v-model="updatedItem.ReorderQuantity" />
             </div>

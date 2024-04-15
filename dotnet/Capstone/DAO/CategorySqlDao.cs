@@ -20,7 +20,7 @@ namespace Capstone.DAO
         {
             List<Category> output = new List<Category>();
 
-            string sql = "SELECT category_id, category_name FROM categories;";
+            string sql = "SELECT category_id, user_id, category_name FROM categories;";
 
             try
             {
@@ -44,16 +44,13 @@ namespace Capstone.DAO
             return output;
         }
 
+        //TODO - Verify that this is working! 
         public List<Category> GetCategoriesByUserId(int userId)
         {
             List<Category> categories = new List<Category>();
 
-            string sql = "SELECT DISTINCT categories.category_id, category_name FROM categories " +
-                "JOIN items ON categories.category_id = items.category_id " +
-                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
-                "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
-                "JOIN users ON inventories.user_id = users.user_id " +
-                "WHERE users.user_id = @userId;";
+            string sql = "SELECT DISTINCT category_id, user_id, category_name FROM categories " +
+                "WHERE user_id = @userId;";
 
             try
             {
@@ -82,6 +79,7 @@ namespace Capstone.DAO
         {
             Category newCategory = new Category();
             newCategory.CategoryId = Convert.ToInt32(reader["category_id"]);
+            newCategory.UserId = Convert.ToInt32(reader["user_id"]);
             newCategory.CategoryName = Convert.ToString(reader["category_name"]);
             return newCategory;
         }

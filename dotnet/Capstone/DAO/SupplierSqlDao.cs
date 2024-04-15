@@ -10,19 +10,17 @@ namespace Capstone.DAO
     public class SupplierSqlDao : ISupplierDao
     {
         private readonly string ConnectionString;
-        private UserSqlDao userSqlDao;
 
         public SupplierSqlDao(string connectionString)
         {
             ConnectionString = connectionString;
-            userSqlDao = new UserSqlDao(connectionString);
         }
 
         public List<Supplier> GetSuppliers()
         {
             List<Supplier> output = new List<Supplier>();
 
-            string sql = "SELECT supplier_id, supplier_name FROM suppliers;";
+            string sql = "SELECT supplier_id, user_id, supplier_name FROM suppliers;";
 
             try
             {
@@ -47,16 +45,13 @@ namespace Capstone.DAO
             return output;
         }
 
+        //TODO - Verify that this is working! 
         public List<Supplier> GetSuppliersByUserId(int userId)
         {
             List<Supplier> suppliers = new List<Supplier>();
 
-            string sql = "SELECT DISTINCT suppliers.supplier_id, supplier_name FROM suppliers " +
-                "JOIN items ON suppliers.supplier_id = items.supplier_id " +
-                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
-                "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
-                "JOIN users ON inventories.user_id = users.user_id " +
-                "WHERE users.user_id = @userId;";
+            string sql = "SELECT DISTINCT supplier_id, user_id, supplier_name FROM suppliers " +
+                "WHERE user_id = @userId;";
 
             try
             {
@@ -85,9 +80,9 @@ namespace Capstone.DAO
         {
             Supplier newSupplier = new Supplier();
 
-            string sql = "INSERT INTO suppliers(supplier_name) " +
+            string sql = "INSERT INTO suppliers(user_id, supplier_name) " +
                 "OUTPUT inserted.supplier_id " +
-                "VALUES (@supplierName)";
+                "VALUES (@userId, @supplierName)";
 
             try
             {
@@ -97,6 +92,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@userId", supplier.UserId);
                     cmd.Parameters.AddWithValue("@supplierName", supplier.SupplierName);
                     newSupplierId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
@@ -114,7 +110,7 @@ namespace Capstone.DAO
         {
             Supplier supplier = new Supplier();
 
-            string sql = "SELECT supplier_id,supplier_name " +
+            string sql = "SELECT supplier_id, user_id, supplier_name " +
                 "FROM suppliers " +
                 "WHERE supplier_id = @supplierId";
 
@@ -144,6 +140,7 @@ namespace Capstone.DAO
         {
             Supplier newSupplier = new Supplier();
             newSupplier.SupplierId = Convert.ToInt32(reader["supplier_id"]);
+            newSupplier.UserId = Convert.ToInt32(reader["user_id"]);
             newSupplier.SupplierName = Convert.ToString(reader["supplier_name"]);
             return newSupplier;
         }
