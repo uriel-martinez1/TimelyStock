@@ -39,7 +39,8 @@ namespace Capstone.Controllers
         {
             try
             {
-                Supplier added = supplierDao.CreateSupplier(supplier);
+                User user = userDao.GetUserByUsername(User.Identity.Name);
+                Supplier added = supplierDao.CreateSupplier(supplier, user);
                 return Created($"/suppliers/{added.SupplierId}", added);
 
             }

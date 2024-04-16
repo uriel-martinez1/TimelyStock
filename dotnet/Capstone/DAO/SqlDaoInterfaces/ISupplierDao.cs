@@ -8,7 +8,7 @@ namespace Capstone.DAO.SqlDaoInterfaces
     {
         List<Supplier> GetSuppliers();
         List<Supplier> GetSuppliersByUserId(int userId);
-        Supplier CreateSupplier(Supplier supplier);
+        Supplier CreateSupplier(Supplier supplier, User user);
         Supplier GetSupplierById(int supplierId);
     }
 }

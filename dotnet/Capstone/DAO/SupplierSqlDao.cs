@@ -76,7 +76,7 @@ namespace Capstone.DAO
             return suppliers;
         }
 
-        public Supplier CreateSupplier(Supplier supplier)
+        public Supplier CreateSupplier(Supplier supplier, User user)
         {
             Supplier newSupplier = new Supplier();
 
@@ -92,7 +92,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@userId", supplier.UserId);
+                    cmd.Parameters.AddWithValue("@userId", user.UserId);
                     cmd.Parameters.AddWithValue("@supplierName", supplier.SupplierName);
                     newSupplierId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
