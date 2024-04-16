@@ -179,6 +179,11 @@ namespace Capstone.DAO
             }
             return item;
         }
+        // maybe extra security in the sql statement to confirm that inventoryId AND the itemId match the item to be updated?
+        public Item UpdateItem(int inventoryId, Item itemToUpdate)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool LinkItemInventory(int inventoryId, int itemId)
         {

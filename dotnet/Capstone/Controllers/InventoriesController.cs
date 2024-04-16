@@ -108,5 +108,56 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
+
+        // still unsure but trying to following good RESTful pattern
+        // create item based on inventoryID
+
+        [HttpPost("{inventoryId}/item")]
+        public ActionResult<Item> AddItemToInventory(int inventoryId, Item item)
+        {
+            try
+            {
+                // Create the item
+                Item newItem = itemDao.CreateItem(item);
+
+                // Link the new item to the inventory
+                bool linkSuccess = itemDao.LinkItemInventory(inventoryId, newItem.ItemId);
+
+                // check if linking is successful
+                if (linkSuccess)
+                {
+                    // if successful return created 
+                    return Created($"/inventories/{inventoryId}/items/{newItem.ItemId}", newItem);
+                }
+                else
+                {
+                    // if not successful, return something that indicates that something went wrong
+                    return BadRequest("Failed to link item to inventory.");
+                }
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
+
+        // Update item based on inventoryId and itemId
+
+        [HttpPut("{inventoryId}/item/{itemid}")]
+        public ActionResult<Item> UpdateItemFromInventory(int inventoryId, Item itemToUpdate)
+        {
+            try
+            {
+                // we need to update the item
+
+                // return ok if successful
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

@@ -49,8 +49,7 @@ namespace Capstone.Controllers
             }
         }
 
-        // TODO -- this might also change in the future depending on url path. Ask Margaret if the linking part to inventory should live here or 
-        [HttpPost("{inventoryId}")]
+        // TODO -- Remove once the rerouting has been completed in the frontend
         // we are going to need to send the inventory id from the route here
         public ActionResult<Item> AddItem(Item item, int inventoryId)
         {
