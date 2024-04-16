@@ -31,4 +31,5 @@ export default {
         return axios.get(`/inventories/${inventoryId}/item`);
     },
     
+    
 }

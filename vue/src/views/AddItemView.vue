@@ -22,14 +22,16 @@ export default {
                 SkuItemNumber: 0,
                 Price: 0,
                 AvailableQuantity: 0,
+                ReorderPoint: 0,
                 ReorderQuantity: 0,
                 CategoryId: 0,
                 SupplierId: 0
             },
 
             supplier: {
-                id: 0,
-                name: ''
+                SupplierId: 0,
+                UserId: 0,
+                CategoryName: '',
             }
         };
     }

@@ -29,7 +29,7 @@
 
             <div>
                 <label>Reorder Point: </label>
-                <input type="text" id="reorder_point" name="reorder_point" v-model="updatedItem.AvailableQuantity" />
+                <input type="text" id="reorder_point" name="reorder_point" v-model="updatedItem.ReorderPoint" />
                 <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
             </div>
 
@@ -98,6 +98,7 @@ export default {
                 SkuItemNumber: this.item.SkuItemNumber,
                 Price: this.item.Price,
                 AvailableQuantity: this.item.AvailableQuantity,
+                ReorderPoint: this.item.ReorderPoint,
                 ReorderQuantity: this.item.ReorderQuantity,
                 CategoryId: this.item.CategoryId,
                 SupplierId: this.item.SupplierId,
@@ -110,7 +111,7 @@ export default {
                 SupplierName: "",
             },
             newCategory: {
-                name: "",
+                CategoryName: "",
             }
 
         };
