@@ -144,18 +144,27 @@ namespace Capstone.Controllers
         // Update item based on inventoryId and itemId
 
         [HttpPut("{inventoryId}/item/{itemid}")]
-        public ActionResult<Item> UpdateItemFromInventory(int inventoryId, Item itemToUpdate)
+        public ActionResult<Item> UpdateItemFromInventory(int inventoryId, int itemId, Item itemToUpdate)
         {
             try
             {
                 // we need to update the item
-
+                Item updatedItem = itemDao.UpdateItem(itemId, itemToUpdate);
+                bool ifMatch = itemDao.ConfirmUpdatedItemFoundInInventory(inventoryId, updatedItem);
                 // return ok if successful
+                if (ifMatch)
+                {
+                    return Ok(updatedItem);
+                }
+                else
+                {
+                    // If the item is not found in the correct inventory, return NotFound
+                    return NotFound("item not found in the specified inventory");
+                }
             }
-            catch (Exception)
+            catch (System.Exception)
             {
-
-                throw;
+                return NotFound();
             }
         }
 

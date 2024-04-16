@@ -12,7 +12,8 @@ namespace Capstone.DAO.SqlDaoInterfaces
         Item CreateItem(Item item);
         Item GetItemById(int itemId);
         // Not sure about how to utilize the inventory Id here?
-        Item UpdateItem(int inventoryId, Item itemToUpdate);
+        Item UpdateItem(int itemId, Item itemToUpdate);
         bool LinkItemInventory(int inventoryId, int itemId);
+        bool ConfirmUpdatedItemFoundInInventory(int inventoryId, Item updatedItem);
     }
 }

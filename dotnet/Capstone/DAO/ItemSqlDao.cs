@@ -179,10 +179,78 @@ namespace Capstone.DAO
             }
             return item;
         }
-        // maybe extra security in the sql statement to confirm that inventoryId AND the itemId match the item to be updated?
-        public Item UpdateItem(int inventoryId, Item itemToUpdate)
+
+        public bool ConfirmUpdatedItemFoundInInventory(int inventoryId, Item updatedItem)
         {
-            throw new NotImplementedException();
+            string sql = "SELECT COUNT(*) FROM items " +
+                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
+                "JOIN inventories ON inventories.inventory_id = inventory_items.inventory_id " +
+                "WHERE inventories.inventory_id = @inventoryId AND items.item_id = @itemId;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+                    cmd.Parameters.AddWithValue("@itemId", updatedItem.ItemId);
+
+                    //Execute scalar query to get the count of rows
+                    int rowCount = (int)cmd.ExecuteScalar();
+
+                    // If rowCount is 1, it means the updated item is found
+                    bool itemFound = rowCount == 1;
+
+                    return itemFound;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+        }
+
+        // maybe extra security in the sql statement to confirm that inventoryId AND the itemId match the item to be updated?
+        public Item UpdateItem(int itemId, Item itemToUpdate)
+        {
+            Item updatedItem = null;
+
+            string sql = "UPDATE items " +
+                "SET item_name = @itemName, product_url = @productUrl, sku_item_number = @skuNumber, price = @price, available_quantity = @availableQty, reorder_point = @reorderPoint, reorder_quantity = @reorderQty, category_id = @categoryId, supplier_id = @supplierId " +
+                "WHERE item_id = @itemId;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@itemName", itemToUpdate.ItemName);
+                    cmd.Parameters.AddWithValue("@productUrl", itemToUpdate.ProductUrl);
+                    cmd.Parameters.AddWithValue("@skuNumber", itemToUpdate.SkuItemNumber);
+                    cmd.Parameters.AddWithValue("@price", itemToUpdate.Price);
+                    cmd.Parameters.AddWithValue("@availableQty", itemToUpdate.AvailableQuantity);
+                    cmd.Parameters.AddWithValue("@reorderPoint", itemToUpdate.ReorderPoint);
+                    cmd.Parameters.AddWithValue("@reorderQty", itemToUpdate.ReorderQuantity);
+                    cmd.Parameters.AddWithValue("@categoryId", itemToUpdate.CategoryId);
+                    cmd.Parameters.AddWithValue("@supplierId", itemToUpdate.SupplierId);
+                    cmd.Parameters.AddWithValue("@itemId", itemToUpdate.ItemId);
+
+                    int numberOfRowsAffected = cmd.ExecuteNonQuery();
+
+                    if(numberOfRowsAffected == 0)
+                    {
+                        throw new DaoException("Zero rows affected, expected at least one");
+                    }
+                }
+                updatedItem = GetItemById(itemId);
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+            return updatedItem;
         }
 
         public bool LinkItemInventory(int inventoryId, int itemId)
