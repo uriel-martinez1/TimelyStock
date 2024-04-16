@@ -20,6 +20,7 @@ namespace Capstone.Controllers
             this.inventoryDao = inventoryDao;
         }
 
+        // TODO -- Maybe get items based on user Id?
         [HttpGet()]
         public ActionResult<List<Item>> GetItems()
         {
@@ -33,7 +34,7 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
-
+        // TODO -- Unsure whether we are going to need this? Test later!
         [HttpGet("/items/search")]
         public ActionResult<List<Item>> GetItemsByName(string name, bool useWildCard = false)
         {
@@ -48,6 +49,7 @@ namespace Capstone.Controllers
             }
         }
 
+        // TODO -- this might also change in the future depending on url path. Ask Margaret if the linking part to inventory should live here or 
         [HttpPost("{inventoryId}")]
         // we are going to need to send the inventory id from the route here
         public ActionResult<Item> AddItem(Item item, int inventoryId)
