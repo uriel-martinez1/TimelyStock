@@ -162,7 +162,7 @@ namespace Capstone.Controllers
                     return NotFound("item not found in the specified inventory");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, "An error occurred while updating item from inventory.");
             }
