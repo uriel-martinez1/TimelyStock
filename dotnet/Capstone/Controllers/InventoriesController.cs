@@ -168,5 +168,18 @@ namespace Capstone.Controllers
             }
         }
 
+        [HttpDelete("{inventoryId}/item/{itemid}")]
+        public ActionResult DeleteItemFromInventory(int inventoryId, int itemId)
+        {
+            try
+            {
+                int confirmDelete = itemDao.DeleteItemByInventoryIdAndItemId(inventoryId, itemId);
+                return confirmDelete != 0 ? NoContent() : NotFound();
+            }
+            catch (System.Exception)
+            {
+                return BadRequest("Does that inventory exist?");
+            }
+        }
     }
 }

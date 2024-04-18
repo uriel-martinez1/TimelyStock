@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Capstone.Exceptions;
 using System;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace Capstone.DAO
 {
@@ -275,6 +276,39 @@ namespace Capstone.DAO
             {
                 throw new DaoException("SQL exception has ocurred: ", ex);
             }
+        }
+
+        public int DeleteItemByInventoryIdAndItemId(int inventoryId, int itemId)
+        {
+            int numberOfRowsAffected = 0;
+
+            string inventoriesItemsSql = "DELETE FROM inventory_items WHERE inventory_id = @inventoryId AND item_id = @itemId;";
+            string itemSql = "DELETE FROM items WHERE item_id = @itemId;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    // delete the reference of the item in the cross table
+                    SqlCommand inventoryItemsCmd = new SqlCommand(inventoriesItemsSql, conn);
+                    inventoryItemsCmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+                    inventoryItemsCmd.Parameters.AddWithValue("@itemId", itemId);
+                    inventoryItemsCmd.ExecuteNonQuery();
+
+                    // now lets delete the item
+                    SqlCommand itemCmd = new SqlCommand(itemSql, conn);
+                    itemCmd.Parameters.AddWithValue("itemId", itemId);
+
+                    numberOfRowsAffected = itemCmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occurred", ex);
+            }
+            return numberOfRowsAffected;
         }
 
         public Item MapRowToItem(SqlDataReader reader)

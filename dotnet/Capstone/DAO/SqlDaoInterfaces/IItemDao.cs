@@ -15,5 +15,6 @@ namespace Capstone.DAO.SqlDaoInterfaces
         Item UpdateItem(int itemId, Item itemToUpdate);
         bool LinkItemInventory(int inventoryId, int itemId);
         bool ConfirmUpdatedItemFoundInInventory(int inventoryId, Item updatedItem);
+        int DeleteItemByInventoryIdAndItemId(int inventoryId, int itemId);
     }
 }
