@@ -18,12 +18,15 @@ namespace Capstone.DAO
             ConnectionString = connectionString;
         }
 
-        public List<Item> GetItems()
+        public List<Item> GetItemsByUserId(int userId)
         {
             List<Item> output = new List<Item>();
 
-            string sql = "SELECT item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id " +
-                "FROM items;";
+            string sql = "SELECT items.item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id  FROM items " +
+                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
+                "JOIN inventories ON inventory_items.inventory_id = inventories.inventory_id " +
+                "JOIN users ON users.user_id = inventories.user_id " +
+                "WHERE users.user_id = @userId;";
 
             try
             {
@@ -31,6 +34,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())

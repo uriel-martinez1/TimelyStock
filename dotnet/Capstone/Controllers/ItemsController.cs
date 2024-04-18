@@ -26,7 +26,8 @@ namespace Capstone.Controllers
         {
             try
             {
-                List<Item> outputList = itemDao.GetItems();
+                User user = userDao.GetUserByUsername(User.Identity.Name);
+                List<Item> outputList = itemDao.GetItemsByUserId(user.UserId);
                 return Ok(outputList);
             }
             catch (System.Exception)
