@@ -33,5 +33,20 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        public ActionResult<Category> AddCategory(Category category)
+        {
+            try
+            {
+                User user = userDao.GetUserByUsername(User.Identity.Name);
+                Category newCategory = categoryDao.CreateCategory(category, user);
+                return Created($"/categories/{newCategory.CategoryId}", newCategory);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }

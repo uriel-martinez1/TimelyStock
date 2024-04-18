@@ -8,5 +8,7 @@ namespace Capstone.DAO.SqlDaoInterfaces
     {
         List<Category> GetCategories();
         List<Category> GetCategoriesByUserId(int userId);
+        Category CreateCategory(Category category, User user);
+        Category GetCategoryByCategoryId(int categoryId);
     }
 }

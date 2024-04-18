@@ -45,7 +45,6 @@ namespace Capstone.DAO
             return output;
         }
 
-        //TODO - Verify that this is working! 
         public List<Supplier> GetSuppliersByUserId(int userId)
         {
             List<Supplier> suppliers = new List<Supplier>();
@@ -82,7 +81,7 @@ namespace Capstone.DAO
 
             string sql = "INSERT INTO suppliers(user_id, supplier_name) " +
                 "OUTPUT inserted.supplier_id " +
-                "VALUES (@userId, @supplierName)";
+                "VALUES (@userId, @supplierName);";
 
             try
             {
