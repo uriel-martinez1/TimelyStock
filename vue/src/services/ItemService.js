@@ -5,8 +5,5 @@ const http = axios.create({
 });
 
 export default {
-    // I am not sure about this?
-    addItem(item, inventoryId){
-        return axios.post(`/items/${inventoryId}`, item);
-    },
+    // we moved the add item to the inventories service
 }

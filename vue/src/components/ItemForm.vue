@@ -79,7 +79,7 @@
 <script>
 import categoriesService from "../services/CategoriesService";
 import supplierServices from "../services/SuppliersServices";
-import itemService from "../services/ItemService";
+import inventoryService from "../services/InventoriesServices";
 
 export default {
     props: {
@@ -147,7 +147,7 @@ export default {
             if (this.editItem.itemId === undefined || this.editItem.itemId === 0){
                 console.log(this.updatedItem)
                 // we should be able to grab the inventory id from the url 
-                itemService.addItem(this.updatedItem, this.$route.params.inventoryId)
+                inventoryService.addItemByInventoryId(this.updatedItem, this.$route.params.inventoryId)
                 .then(response =>{
                     if(response.status === 201){
                         // if successful, lets go back to the inventory view

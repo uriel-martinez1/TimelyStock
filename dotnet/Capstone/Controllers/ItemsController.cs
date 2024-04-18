@@ -20,7 +20,6 @@ namespace Capstone.Controllers
             this.inventoryDao = inventoryDao;
         }
 
-        // TODO -- Maybe get items based on user Id?
         [HttpGet()]
         public ActionResult<List<Item>> GetItems()
         {
@@ -49,34 +48,5 @@ namespace Capstone.Controllers
                 return NotFound();
             }
         }
-
-        // TODO -- Remove once the rerouting has been completed in the frontend
-        // we are going to need to send the inventory id from the route here
-        //public ActionResult<Item> AddItem(Item item, int inventoryId)
-        //{
-        //    try
-        //    {
-        //        // first we create the item
-        //        Item added = itemDao.CreateItem(item);
-        //        // then we need to link the new item to the inventory it is in
-        //        bool linkSuccess = itemDao.LinkItemInventory(inventoryId, added.ItemId);
-        //        // then we return created
-        //        if (linkSuccess)
-        //        {
-        //            // if successful, return created
-        //            return Created($"/items/{added.ItemId}", added);
-        //        }
-        //        else
-        //        {
-        //            // lets return something if the item does not properly link
-        //            return BadRequest("Failed to link item to inventory.");
-        //        }
-        //    }
-        //    catch (System.Exception)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-        
     }
 }

@@ -31,5 +31,7 @@ export default {
         return axios.get(`/inventories/${inventoryId}/item`);
     },
     
-    
+    addItemByInventoryId(item, inventoryId){
+        return axios.post(`/inventories/${inventoryId}/item`, item);
+    },
 }

@@ -6,6 +6,7 @@ using Capstone.Exceptions;
 using System;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualBasic;
 
 namespace Capstone.DAO
 {
@@ -135,9 +136,34 @@ namespace Capstone.DAO
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@itemName", item.ItemName);
-                    cmd.Parameters.AddWithValue("@productUrl", item.ProductUrl);
-                    cmd.Parameters.AddWithValue("@skuNumber", item.SkuItemNumber);
-                    cmd.Parameters.AddWithValue("@price", item.Price);
+                    
+                    if (item.ProductUrl != null)
+                    {
+                        cmd.Parameters.AddWithValue("@productUrl", item.ProductUrl);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@productUrl", DBNull.Value); // nullable
+                    }
+
+                    if (item.SkuItemNumber != null)
+                    {
+                        cmd.Parameters.AddWithValue("@skuNumber", item.SkuItemNumber);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@skuNumber", DBNull.Value); // nullable
+                    }
+
+                    if (item.Price != null)
+                    {
+                        cmd.Parameters.AddWithValue("@price", item.Price);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@price", DBNull.Value); // nullable
+                    }
+
                     cmd.Parameters.AddWithValue("@availableQty", item.AvailableQuantity);
                     cmd.Parameters.AddWithValue("@reorderPoint", item.ReorderPoint);
                     cmd.Parameters.AddWithValue("@reorderQty", item.ReorderQuantity);
