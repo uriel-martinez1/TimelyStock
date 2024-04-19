@@ -2,7 +2,10 @@
     <div>
         <ul>
             <li v-for="item in items" v-bind:key="item.itemId">
-                {{ item.itemName }}
+                <router-link v-bind:to="{name: 'ItemView', params: {inventoryId: this.$route.params.inventoryId, itemId: item.itemId}}">
+                    {{ item.itemName }}
+                </router-link>
+                <button v-on:click="editItem">Edit</button>
             </li>
         </ul>
     </div>
@@ -19,12 +22,15 @@ export default{
     },
     created() {
         const id = this.$route.params.inventoryId
-        console.log(id)
         inventoriesServices.getItemsByInventoryId(id)
         .then ((response) =>{
-            console.log(response.data);
             this.items = response.data;
         });
+    },
+    methods: {
+        editItem(itemId) {
+            this.$router.push({name: "EditItemView", params: {inventoryId: this.$route.params.inventoryId, itemId: itemId}})
+        }
     }
 }
 </script>
