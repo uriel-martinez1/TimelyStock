@@ -12,7 +12,7 @@ export default {
     },
 
     getInventoryDetail(inventoryId) {
-        return axios.get(`/inventories/${inventoryId}`)
+        return axios.get(`/inventories/${inventoryId}`);
     },
 
     addInventory(inventory){
@@ -29,6 +29,10 @@ export default {
     
     getItemsByInventoryId(inventoryId){
         return axios.get(`/inventories/${inventoryId}/item`);
+    },
+
+    getItemByInventoryIdAndItemId(inventoryId, itemId){
+        return axios.get(`/inventories/${inventoryId}/item/${itemId}`);
     },
     
     addItemByInventoryId(item, inventoryId){

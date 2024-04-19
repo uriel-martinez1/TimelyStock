@@ -109,6 +109,21 @@ namespace Capstone.Controllers
             }
         }
 
+        // get a single item by inventory id
+        [HttpGet("{inventoryId}/item/{itemId}")]
+        public ActionResult<Item> GetItemByInventoryIdAndItemId(int inventoryId, int itemId)
+        {
+            try
+            {
+                Item outputItem = itemDao.GetItemByInventoryIdAndItemId(inventoryId, itemId);
+                return Ok(outputItem);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
+
         // still unsure but trying to following good RESTful pattern
         // create item based on inventoryID
 
@@ -143,7 +158,7 @@ namespace Capstone.Controllers
 
         // Update item based on inventoryId and itemId
 
-        [HttpPut("{inventoryId}/item/{itemid}")]
+        [HttpPut("{inventoryId}/item/{itemId}")]
         public ActionResult<Item> UpdateItemFromInventory(int inventoryId, int itemId, Item itemToUpdate)
         {
             try
@@ -168,7 +183,7 @@ namespace Capstone.Controllers
             }
         }
 
-        [HttpDelete("{inventoryId}/item/{itemid}")]
+        [HttpDelete("{inventoryId}/item/{itemId}")]
         public ActionResult DeleteItemFromInventory(int inventoryId, int itemId)
         {
             try

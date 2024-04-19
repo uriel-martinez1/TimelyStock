@@ -9,6 +9,7 @@ namespace Capstone.DAO.SqlDaoInterfaces
         List<Item> GetItemsByUserId(int userId);
         List<Item> GetItemsByName(string name, bool useWildCard);
         List<Item> GetItemsByInventoryId(int inventoryId);
+        Item GetItemByInventoryIdAndItemId(int inventoryId, int itemId);
         Item CreateItem(Item item);
         Item GetItemById(int itemId);
         // Not sure about how to utilize the inventory Id here?

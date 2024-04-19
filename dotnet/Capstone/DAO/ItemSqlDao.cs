@@ -191,11 +191,43 @@ namespace Capstone.DAO
 
             try
             {
-                using(SqlConnection conn = new SqlConnection(ConnectionString))
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@itemId", itemId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        item = MapRowToItem(reader);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new DaoException("SQL exception occured", ex);
+            }
+            return item;
+        }
+
+        public Item GetItemByInventoryIdAndItemId(int inventoryId, int itemId)
+        {
+            Item item = new Item();
+
+            string sql = "SELECT items.item_id, item_name, product_url, sku_item_number, price, available_quantity, reorder_point, reorder_quantity, category_id, supplier_id FROM items " +
+                "JOIN inventory_items ON items.item_id = inventory_items.item_id " +
+                "JOIN inventories ON inventories.inventory_id = inventory_items.inventory_id " +
+                "WHERE items.item_id = @itemId AND inventories.inventory_id = @inventoryId;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("inventoryId", inventoryId);
+                    cmd.Parameters.AddWithValue("itemId", itemId);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
