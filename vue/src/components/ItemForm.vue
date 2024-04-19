@@ -40,14 +40,14 @@
 
             <div>
                 <label for="suppliers">Supplier: </label>
-                <select id="suppliers" name="suppliers" v-model="updatedItem.SupplierId" v-on:change="handleSupplierChange">
+                <select id="suppliers" name="suppliers" v-model="updatedItem.SupplierId" v-on:change="handleSupplierCategoryChange">
                     <option disabled selected>Select a supplier</option>
                     <!--This is where we display all the existing supplier-->
                     <option v-for="supplier in suppliers" v-bind:value="supplier.supplierId" v-bind:key="supplier.supplierId">
                         {{ supplier.supplierName }}
                     </option>
                     <!--If the user wants to add a new supplier, then they must select the add new supplier dropdown-->
-                    <option value="add">Add new supplier</option>
+                    <option value="addSupplier">Add new supplier</option>
                 </select>
             </div>
             <!--This is the form for the new supplier-->
@@ -60,15 +60,23 @@
 
             <div>
                 <label for="categoriess">Categories: </label>
-                <select id="categories" name="categories" v-model="updatedItem.CategoryId">
+                <select id="categories" name="categories" v-model="updatedItem.CategoryId" v-on:change="handleSupplierCategoryChange">
                     <option disabled selected>Select a category</option>
                     <!--This is where we display all the existing categories-->
                     <option v-for="category in categories" v-bind:value="category.categoryId" v-bind:key="category.categoryId">
                         {{ category.categoryName }}
                     </option>
-                    <option value="Add">Add new category</option>
+                    <!--If the user wants to add a new supplier, then they must select the add new supplier dropdown-->
+                    <option value="addCategory">Add new category</option>
                 </select>
             </div>
+            <!--This is the form for the new category-->
+            <form v-if="showAddCategory">
+                <label for="categoryName">Category Name: </label>
+                <input type="text" id="categoryName" name="categoryName" v-model="newCategory.CategoryName"/>
+                <button v-on:click.prevent="saveNewCategory" :disabled="validate">Save</button>
+                <button v-on:click="resetAddForm">Cancel</button>
+            </form>
     
         </div>
         <button>Save</button>
@@ -104,6 +112,7 @@ export default {
                 SupplierId: this.item.SupplierId,
             },
             showAddSupplier: false,
+            showAddCategory: false,
             updatedItem: {},
             suppliers: [],
             categories: [],
@@ -166,6 +175,19 @@ export default {
                 this.updatedItem.SupplierId = response.data.supplierId;
                 this.fetchSuppliers();
                 this.resetAddForm();
+                this.showAddSupplier = false;
+            })
+        },
+        saveNewCategory() {
+            // we need the category service here for create category
+            categoriesService
+            .addCategory(this.newCategory)
+            .then((response) => {
+                console.log(response);
+                this.updatedItem.CategoryId = response.data.categoryId;
+                this.fetchCategories();
+                this.resetAddForm();
+                this.showAddCategory = false;
             })
         },
         resetAddForm() {
@@ -174,10 +196,12 @@ export default {
                 SupplierName: "",
             };
         },
-        // this will handle the showing of the form
-        handleSupplierChange(event) {
-            if (event.target.value === "add") {
+        // this will handle the showing of the form for suppliers and categories
+        handleSupplierCategoryChange(event) {
+            if (event.target.value === "addSupplier") {
                 this.showAddSupplier = true;
+            } else if (event.target.value === "addCategory") {
+                this.showAddCategory = true;
             }
         },
     },

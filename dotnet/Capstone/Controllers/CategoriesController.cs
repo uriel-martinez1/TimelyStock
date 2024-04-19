@@ -34,7 +34,7 @@ namespace Capstone.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost()]
         public ActionResult<Category> AddCategory(Category category)
         {
             try
