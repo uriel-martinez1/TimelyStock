@@ -1,46 +1,46 @@
 <template>
-    <form v-on:submit.prevent="submitForm">
+    <form v-if="!loading" v-on:submit.prevent="submitForm">
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
-                <input type="text" id="name" name="name" v-model="updatedItem.ItemName"/>
+                <input type="text" id="name" name="name" v-model="updatedItem.itemName"/>
             </div>
 
             <div id="productUrl">
                 <label>Product Url: </label>
-                <input type="url" id="url" name="url" v-model="updatedItem.ProductUrl" />
+                <input type="url" id="url" name="url" v-model="updatedItem.productUrl" />
             </div>
 
             <div id="itemSku">
                 <label>SKU: </label>
-                <input type="text" id="sku" name="sku" v-model="updatedItem.SkuItemNumber" />
+                <input type="text" id="sku" name="sku" v-model="updatedItem.skuItemNumber" />
             </div>
 
             <div>
                 <label>Price: </label>
-                <input type="text" id="price" name="price" v-model="updatedItem.Price" />
+                <input type="text" id="price" name="price" v-model="updatedItem.price" />
             </div>
 
             <div>
                 <label>Available Quantity: </label>
-                <input type="text" id="available_quantity" name="available_quantity" v-model="updatedItem.AvailableQuantity" />
+                <input type="text" id="available_quantity" name="available_quantity" v-model="updatedItem.availableQuantity" />
                 <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
             </div>
 
             <div>
                 <label>Reorder Point: </label>
-                <input type="text" id="reorder_point" name="reorder_point" v-model="updatedItem.ReorderPoint" />
+                <input type="text" id="reorder_point" name="reorder_point" v-model="updatedItem.reorderPoint" />
                 <!--For the available quantity we are going to need a call some method that grabs all the avaialble quantity at the time of the call-->
             </div>
 
             <div>
                 <label>Reorder Quantity: </label>
-                <input type="text" id="reorder_quantity" name="reorder_quantity" v-model="updatedItem.ReorderQuantity" />
+                <input type="text" id="reorder_quantity" name="reorder_quantity" v-model="updatedItem.reorderQuantity" />
             </div>
 
             <div>
                 <label for="suppliers">Supplier: </label>
-                <select id="suppliers" name="suppliers" v-model="updatedItem.SupplierId" v-on:change="handleSupplierCategoryChange">
+                <select id="suppliers" name="suppliers" v-model="updatedItem.supplierId" v-on:change="handleSupplierCategoryChange">
                     <option disabled selected>Select a supplier</option>
                     <!--This is where we display all the existing supplier-->
                     <option v-for="supplier in suppliers" v-bind:value="supplier.supplierId" v-bind:key="supplier.supplierId">
@@ -60,7 +60,7 @@
 
             <div>
                 <label for="categoriess">Categories: </label>
-                <select id="categories" name="categories" v-model="updatedItem.CategoryId" v-on:change="handleSupplierCategoryChange">
+                <select id="categories" name="categories" v-model="updatedItem.categoryId" v-on:change="handleSupplierCategoryChange">
                     <option disabled selected>Select a category</option>
                     <!--This is where we display all the existing categories-->
                     <option v-for="category in categories" v-bind:value="category.categoryId" v-bind:key="category.categoryId">
@@ -82,6 +82,10 @@
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
     </form>
+
+    <div v-else>
+        Loading...
+    </div>
 </template>
 
 <script>
@@ -93,27 +97,16 @@ export default {
     props: {
         item: {
             type: Object,
-            required: true
+            default: () => ({}),    // this should default to empty object
+            required: true,
         },
     },
 
     data() {
         return {
-            editItem: {
-                itemId: this.item.ItemId,
-                itemName: this.item.ItemName,
-                ProductUrl: this.item.ProductUrl,
-                SkuItemNumber: this.item.SkuItemNumber,
-                Price: this.item.Price,
-                AvailableQuantity: this.item.AvailableQuantity,
-                ReorderPoint: this.item.ReorderPoint,
-                ReorderQuantity: this.item.ReorderQuantity,
-                CategoryId: this.item.CategoryId,
-                SupplierId: this.item.SupplierId,
-            },
+            updatedItem: {},
             showAddSupplier: false,
             showAddCategory: false,
-            updatedItem: {},
             suppliers: [],
             categories: [],
             newSupplier: {
@@ -121,45 +114,90 @@ export default {
             },
             newCategory: {
                 CategoryName: "",
-            }
+            },
+            loading: false,
 
         };
     },
     mounted() {
-        // fetch suppliers when the component is mounted
-        this.fetchSuppliers();
-        this.fetchCategories();
+        this.fetchData();
     },
 
     methods: {
-        async fetchSuppliers() {
+        // async fetchSuppliers() {
+        //     try {
+        //         const response = await supplierServices.getSuppliers();
+        //         console.log(response.data);
+        //         this.suppliers = response.data;
+        //     } catch (error) {
+        //         console.error("Error fetching suppliers:", error);
+        //     }
+        // },
+        // async fetchCategories() {
+        //     try {
+        //         const response = await categoriesService.getCategories();
+        //         console.log(response.data);
+        //         this.categories = response.data;
+        //     } catch (error) {
+        //         console.error("Error fetching categories:", error);
+        //     }
+        // },
+        async fetchData() {
+            this.loading = true;
             try {
-                const response = await supplierServices.getSuppliers();
-                console.log(response.data);
-                this.suppliers = response.data;
+                const [suppliersResponse, categoriesResponse] = await Promise.all([
+                    supplierServices.getSuppliers(),
+                    categoriesService.getCategories()
+                ]);
+                this.suppliers = suppliersResponse.data;
+                this.categories = categoriesResponse.data;
+                this.checkForExistingItem();
+                console.log(this.updatedItem);
             } catch (error) {
-                console.error("Error fetching suppliers:", error);
+                console.error("Error fetching data:", error);
+            } finally {
+                this.loading = false;
             }
         },
-        async fetchCategories() {
-            try {
-                const response = await categoriesService.getCategories();
-                console.log(response.data);
-                this.categories = response.data;
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-            }
-        },
+        // submitForm(){
+        //     // create new item
+        //     console.log(this.updatedItem);
+        //     if (this.editItem.itemId === undefined || this.editItem.itemId === 0){
+        //         console.log(this.updatedItem)
+        //         // we should be able to grab the inventory id from the url 
+        //         inventoryService.addItemByInventoryId(this.updatedItem, this.$route.params.inventoryId)
+        //         .then(response =>{
+        //             if(response.status === 201){
+        //                 // if successful, lets go back to the inventory view
+        //                 this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
+        //             }
+        //         })
+        //     } else {
+        //         // edit existing item
+        //         inventoryService.updateItemByInventoryId(this.editItem)
+        //         .then((response) => {
+        //             if (response.status === 200) {
+        //                 this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
+        //             }
+        //         })
+        //     }
+        // },
         submitForm(){
-            // create new item
-            console.log(this.updatedItem);
-            if (this.editItem.itemId === undefined || this.editItem.itemId === 0){
+            if (this.updatedItem.itemId === undefined || this.updatedItem.itemId === 0) {
                 console.log(this.updatedItem)
-                // we should be able to grab the inventory id from the url 
+                // Create new item 
                 inventoryService.addItemByInventoryId(this.updatedItem, this.$route.params.inventoryId)
-                .then(response =>{
+                .then((response) =>{
                     if(response.status === 201){
                         // if successful, lets go back to the inventory view
+                        this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
+                    }
+                });
+            } else {
+                // edit existing item
+                inventoryService.updateItemByInventoryId(this.updatedItem)
+                .then((response) => {
+                    if (response.status === 200) {
                         this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
                     }
                 })
@@ -203,6 +241,25 @@ export default {
             } else if (event.target.value === "addCategory") {
                 this.showAddCategory = true;
             }
+        },
+        cancelForm() {
+            this.$router.back();
+        },
+        checkForExistingItem() {
+            console.log(this.item);
+            console.log(this.updatedItem);
+            this.updatedItem = { 
+                itemId: this.item.itemId,
+                itemName: this.item.itemName,
+                productUrl: this.item.productUrl,
+                skuItemNumber: this.item.skuItemNumber,
+                price: this.item.price,
+                availableQuantity: this.item.availableQuantity,
+                reorderPoint: this.item.reorderPoint,
+                reorderQuantity: this.item.reorderQuantity,
+                categoryId: this.item.categoryId,
+                supplierId: this.item.supplierId
+             };
         },
     },
 };

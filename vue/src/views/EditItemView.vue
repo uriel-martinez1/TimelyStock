@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1>This is the edit item form</h1>
+        <h1>Edit Item</h1>
+        <item-form v-bind:item="item"></item-form>
     </div>
 </template>
 
@@ -10,7 +11,7 @@ import InventoriesServices from '../services/InventoriesServices';
 
 export default {
     components: {
-
+        itemForm,
     }, 
     data() {
         return {
@@ -21,7 +22,6 @@ export default {
         getItem(inventoryId, itemId){
             InventoriesServices.getItemByInventoryIdAndItemId(inventoryId, itemId)
             .then((response) =>{
-                console.log(response.data);
                 this.item = response.data;
             })
             .catch((error) =>{

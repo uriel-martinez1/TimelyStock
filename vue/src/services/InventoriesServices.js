@@ -7,7 +7,7 @@ const http = axios.create({
 
 export default {
     // the endpoint and parameters in the function could change
-    getInventories(){
+    getInventories() {
         return axios.get(`/inventories`);
     },
 
@@ -15,7 +15,7 @@ export default {
         return axios.get(`/inventories/${inventoryId}`);
     },
 
-    addInventory(inventory){
+    addInventory(inventory) {
         return axios.post(`/inventories`, inventory);
     },
 
@@ -27,15 +27,19 @@ export default {
         return axios.delete(`/inventories/${inventoryId}`);
     }, 
     
-    getItemsByInventoryId(inventoryId){
+    getItemsByInventoryId(inventoryId) {
         return axios.get(`/inventories/${inventoryId}/item`);
     },
 
-    getItemByInventoryIdAndItemId(inventoryId, itemId){
+    getItemByInventoryIdAndItemId(inventoryId, itemId) {
         return axios.get(`/inventories/${inventoryId}/item/${itemId}`);
     },
     
-    addItemByInventoryId(item, inventoryId){
+    addItemByInventoryId(item, inventoryId) {
         return axios.post(`/inventories/${inventoryId}/item`, item);
+    },
+
+    updateItemByInventoryId(inventoryId, itemId) {
+        return axios.put(`/inventories/${inventoryId}/item/${itemId}`);
     },
 }

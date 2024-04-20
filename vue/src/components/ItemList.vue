@@ -5,7 +5,7 @@
                 <router-link v-bind:to="{name: 'ItemView', params: {inventoryId: this.$route.params.inventoryId, itemId: item.itemId}}">
                     {{ item.itemName }}
                 </router-link>
-                <button v-on:click="editItem">Edit</button>
+                <button v-on:click="editItem(item.itemId)">Edit</button>
             </li>
         </ul>
     </div>

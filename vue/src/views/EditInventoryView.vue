@@ -35,22 +35,7 @@ export default {
     },
     created() {
         this.getInventory(this.$route.params.inventoryId);
-
-
-        // let inventoryId = parseInt(this.$route.params.inventoryId);
-        // if(inventoryId != 0) {
-        //     inventoriesServices.getInventoryDetail(inventoryId).then((response) =>{
-        //         console.log(response.data);
-        //         this.inventoryObj = response.data;
-        //     })
-        //     .catch((error) => {
-        //         if (error.response.status === 404) {
-        //             alert("Error getting card. This card may have been deleted or you have entered an invalid card id");
-        //             this.$router.push({name: 'home'});
-        //         }
-        //     });
-        // }
-    }
+    },
 }
 
 </script>

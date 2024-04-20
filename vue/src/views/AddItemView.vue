@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>Add new item</h1>
-        <!--We will be binding to the parent and feed the data to the child(ItemForm)-->
         <item-form v-bind:item="item" />
     </div>
 </template>
@@ -15,24 +14,7 @@ export default {
     }, 
     data() {
         return {
-            item: {
-                ItemId: 0,
-                ItemName: '',
-                ProductUrl: 0,
-                SkuItemNumber: 0,
-                Price: 0,
-                AvailableQuantity: 0,
-                ReorderPoint: 0,
-                ReorderQuantity: 0,
-                CategoryId: 0,
-                SupplierId: 0
-            },
-
-            supplier: {
-                SupplierId: 0,
-                UserId: 0,
-                CategoryName: '',
-            }
+            item: {},
         };
     }
 }
