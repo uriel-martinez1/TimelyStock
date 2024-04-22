@@ -1,5 +1,9 @@
 <template>
-    <form v-if="!loading" v-on:submit.prevent="submitForm">
+    <div v-if="loading">
+        <h>Loading...</h>
+    </div>
+
+    <form v-else v-on:submit.prevent="submitForm">
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
@@ -82,10 +86,7 @@
         <button>Save</button>
         <button v-on:click="cancelForm">Cancel</button>
     </form>
-
-    <div v-else>
-        Loading...
-    </div>
+    
 </template>
 
 <script>
@@ -104,7 +105,7 @@ export default {
 
     data() {
         return {
-            updatedItem: {},
+            updatedItem: null,
             showAddSupplier: false,
             showAddCategory: false,
             suppliers: [],
@@ -115,7 +116,7 @@ export default {
             newCategory: {
                 CategoryName: "",
             },
-            loading: false,
+            loading: true,
 
         };
     },
@@ -124,26 +125,7 @@ export default {
     },
 
     methods: {
-        // async fetchSuppliers() {
-        //     try {
-        //         const response = await supplierServices.getSuppliers();
-        //         console.log(response.data);
-        //         this.suppliers = response.data;
-        //     } catch (error) {
-        //         console.error("Error fetching suppliers:", error);
-        //     }
-        // },
-        // async fetchCategories() {
-        //     try {
-        //         const response = await categoriesService.getCategories();
-        //         console.log(response.data);
-        //         this.categories = response.data;
-        //     } catch (error) {
-        //         console.error("Error fetching categories:", error);
-        //     }
-        // },
         async fetchData() {
-            this.loading = true;
             try {
                 const [suppliersResponse, categoriesResponse] = await Promise.all([
                     supplierServices.getSuppliers(),
@@ -151,37 +133,34 @@ export default {
                 ]);
                 this.suppliers = suppliersResponse.data;
                 this.categories = categoriesResponse.data;
-                this.checkForExistingItem();
-                console.log(this.updatedItem);
+                console.log("This is where item should be null" + this.updatedItem)
+                // Checks if the prop is available before calling checkForExistingItem
+                await this.checkForExistingItem();
+                console.log("If item does exist, it should not be null and the data should be available in the input fields" + this.updatedItem);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
                 this.loading = false;
             }
         },
-        // submitForm(){
-        //     // create new item
-        //     console.log(this.updatedItem);
-        //     if (this.editItem.itemId === undefined || this.editItem.itemId === 0){
-        //         console.log(this.updatedItem)
-        //         // we should be able to grab the inventory id from the url 
-        //         inventoryService.addItemByInventoryId(this.updatedItem, this.$route.params.inventoryId)
-        //         .then(response =>{
-        //             if(response.status === 201){
-        //                 // if successful, lets go back to the inventory view
-        //                 this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
-        //             }
-        //         })
-        //     } else {
-        //         // edit existing item
-        //         inventoryService.updateItemByInventoryId(this.editItem)
-        //         .then((response) => {
-        //             if (response.status === 200) {
-        //                 this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
-        //             }
-        //         })
-        //     }
-        // },
+        async checkForExistingItem() {
+            if (this.item) {
+                this.updatedItem = { ...this.item };
+            } else {
+                this.updatedItem =  {
+                    itemId: 0,
+                    itemName: '',
+                    productUrl: '',
+                    skuItemNumber: '',
+                    price: 0,
+                    availableQuantity: 0,
+                    reorderPoint: 0,
+                    reorderQuantity: 0,
+                    categoryId: 0,
+                    supplierId: 0, 
+                };
+            }
+        },
         submitForm(){
             if (this.updatedItem.itemId === undefined || this.updatedItem.itemId === 0) {
                 console.log(this.updatedItem)
@@ -244,22 +223,6 @@ export default {
         },
         cancelForm() {
             this.$router.back();
-        },
-        checkForExistingItem() {
-            console.log(this.item);
-            console.log(this.updatedItem);
-            this.updatedItem = { 
-                itemId: this.item.itemId,
-                itemName: this.item.itemName,
-                productUrl: this.item.productUrl,
-                skuItemNumber: this.item.skuItemNumber,
-                price: this.item.price,
-                availableQuantity: this.item.availableQuantity,
-                reorderPoint: this.item.reorderPoint,
-                reorderQuantity: this.item.reorderQuantity,
-                categoryId: this.item.categoryId,
-                supplierId: this.item.supplierId
-             };
         },
     },
 };
