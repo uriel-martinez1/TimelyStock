@@ -125,6 +125,7 @@ export default {
     },
 
     methods: {
+        // lets grab the suppliers and categories
         async fetchData() {
             try {
                 const [suppliersResponse, categoriesResponse] = await Promise.all([
@@ -135,30 +136,8 @@ export default {
                 this.categories = categoriesResponse.data;
                 console.log("This is where item should be null" + this.updatedItem)
                 // Checks if the prop is available before calling checkForExistingItem
-                await this.checkForExistingItem();
-                console.log("If item does exist, it should not be null and the data should be available in the input fields" + this.updatedItem);
             } catch (error) {
                 console.error("Error fetching data:", error);
-            } finally {
-                this.loading = false;
-            }
-        },
-        async checkForExistingItem() {
-            if (this.item) {
-                this.updatedItem = { ...this.item };
-            } else {
-                this.updatedItem =  {
-                    itemId: 0,
-                    itemName: '',
-                    productUrl: '',
-                    skuItemNumber: '',
-                    price: 0,
-                    availableQuantity: 0,
-                    reorderPoint: 0,
-                    reorderQuantity: 0,
-                    categoryId: 0,
-                    supplierId: 0, 
-                };
             }
         },
         submitForm(){
