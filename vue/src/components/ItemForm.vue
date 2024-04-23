@@ -1,9 +1,5 @@
 <template>
-    <div v-if="loading">
-        <h>Loading...</h>
-    </div>
-
-    <form v-else v-on:submit.prevent="submitForm">
+    <form v-on:submit.prevent="submitForm">
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
@@ -98,14 +94,24 @@ export default {
     props: {
         item: {
             type: Object,
-            default: () => ({}),    // this should default to empty object
             required: true,
         },
     },
 
     data() {
         return {
-            updatedItem: null,
+            updatedItem: {
+                itemId: this.item.itemId,
+                itemName: this.item.itemName,
+                productUrl: this.item.productUrl,
+                skuItemNumber: this.item.skuItemNumber,
+                price: this.item.price,
+                availableQuantity: this.item.availableQuantity,
+                reorderPoint: this.item.reorderPoint,
+                reorderQuantity: this.item.reorderQuantity, 
+                categoryId: this.item.categoryId,
+                supplierId: this.item.supplierId
+            },
             showAddSupplier: false,
             showAddCategory: false,
             suppliers: [],
@@ -116,8 +122,6 @@ export default {
             newCategory: {
                 CategoryName: "",
             },
-            loading: true,
-
         };
     },
     mounted() {
@@ -135,14 +139,12 @@ export default {
                 this.suppliers = suppliersResponse.data;
                 this.categories = categoriesResponse.data;
                 console.log("This is where item should be null" + this.updatedItem)
-                // Checks if the prop is available before calling checkForExistingItem
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         },
         submitForm(){
-            if (this.updatedItem.itemId === undefined || this.updatedItem.itemId === 0) {
-                console.log(this.updatedItem)
+            if (this.updatedItem.itemId === 0) {
                 // Create new item 
                 inventoryService.addItemByInventoryId(this.updatedItem, this.$route.params.inventoryId)
                 .then((response) =>{

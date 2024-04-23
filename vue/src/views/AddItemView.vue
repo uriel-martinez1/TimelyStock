@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Add new item</h1>
+        <h1>Add New Item</h1>
         <item-form v-bind:item="item" />
     </div>
 </template>
@@ -14,12 +14,20 @@ export default {
     }, 
     data() {
         return {
-            item: {},
+            item: {
+                itemId: 0,
+                itemName: "",
+                productUrl: "",
+                skuItemNumber: "",
+                price: 0,
+                availableQuantity: 0,
+                reorderPoint: 0,
+                reorderQuantity: 0,
+                categoryId: 0,
+                supplierId: 0
+            },
         };
-    }
-}
+    },
+};
 
 </script>
-
-<style>
-</style>
