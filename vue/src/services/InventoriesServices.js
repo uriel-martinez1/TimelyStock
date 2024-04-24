@@ -39,7 +39,7 @@ export default {
         return axios.post(`/inventories/${inventoryId}/item`, item);
     },
 
-    updateItemByInventoryId(inventoryId, itemId) {
-        return axios.put(`/inventories/${inventoryId}/item/${itemId}`);
+    updateItemByInventoryId(inventoryId, itemId, item) {
+        return axios.put(`/inventories/${inventoryId}/item/${itemId}`, item);
     },
 }

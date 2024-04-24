@@ -80,7 +80,7 @@
     
         </div>
         <button>Save</button>
-        <button v-on:click="cancelForm">Cancel</button>
+        <button v-on:click.prevent="cancelForm">Cancel</button>
     </form>
     
 </template>
@@ -127,7 +127,11 @@ export default {
     mounted() {
         this.fetchData();
     },
-
+    computed: {
+        validate() {
+            return !this.newSupplier.SupplierName;
+        }
+    },
     methods: {
         // lets grab the suppliers and categories
         async fetchData() {
@@ -155,7 +159,9 @@ export default {
                 });
             } else {
                 // edit existing item
-                inventoryService.updateItemByInventoryId(this.updatedItem)
+                let inventoryId = this.$route.params.inventoryId;
+                let itemId = this.$route.params.itemId;
+                inventoryService.updateItemByInventoryId(inventoryId, itemId, this.updatedItem)
                 .then((response) => {
                     if (response.status === 200) {
                         this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
@@ -171,7 +177,7 @@ export default {
                 console.log(response);
                 // Update the updatedItem.SupplierId with the newly created Supplier Id 
                 this.updatedItem.SupplierId = response.data.supplierId;
-                this.fetchSuppliers();
+                this.fetchData();
                 this.resetAddForm();
                 this.showAddSupplier = false;
             })
@@ -183,7 +189,7 @@ export default {
             .then((response) => {
                 console.log(response);
                 this.updatedItem.CategoryId = response.data.categoryId;
-                this.fetchCategories();
+                this.fetchData();
                 this.resetAddForm();
                 this.showAddCategory = false;
             })
