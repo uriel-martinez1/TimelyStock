@@ -6,6 +6,7 @@
                     {{ item.itemName }}
                 </router-link>
                 <button v-on:click="editItem(item.itemId)">Edit</button>
+                <button v-on:click="deleteItem(item.itemId)">Delete</button>
             </li>
         </ul>
     </div>
@@ -30,8 +31,32 @@ export default{
     methods: {
         editItem(itemId) {
             this.$router.push({name: "EditItemView", params: {inventoryId: this.$route.params.inventoryId, itemId: itemId}})
-        }
-    }
+        },
+        deleteItem(itemId) {
+            if (confirm("Are you sure you want to delete this item? This action cannot be undone.")) {
+                // we add the inventoryService, we will need the inventory Id and the itemId
+                let inventoryId = this.$route.params.inventoryId;
+                console.log(itemId);
+                inventoriesServices.deleteItemByInventoryId(inventoryId, itemId)
+                .then ((response) => {
+                    if (response.status === 204){
+                        this.pushToinventoryView();
+                    }
+                })
+                .catch ((error) => {
+                    if (error.response.status === 404) {
+                        alert("Error deleting this item. This item may be deleted or you have entered an invalid item and inventory id");
+                        this.pushToinventoryView();
+                        
+                    }
+                });
+            }
+        },
+        pushToinventoryView() {
+            let inventoryId = this.$route.params.inventoryId;
+            this.$router.push({name: 'InventoryView', params: {inventoryId: this.inventoryId}});
+        },
+    },
 }
 </script>
 

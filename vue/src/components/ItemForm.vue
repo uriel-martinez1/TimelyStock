@@ -54,7 +54,7 @@
             <form v-if="showAddSupplier">
                 <label for="supplierName">Supplier Name: </label>
                 <input type="text" id="supplierName" name="supplierName" v-model="newSupplier.SupplierName"/>
-                <button v-on:click.prevent="saveNewSupplier" :disabled="validate">Save</button>
+                <button v-on:click.prevent="saveNewSupplier" :disabled="validateSupplier">Save</button>
                 <button v-on:click="resetAddForm">Cancel</button>
             </form>
 
@@ -74,7 +74,7 @@
             <form v-if="showAddCategory">
                 <label for="categoryName">Category Name: </label>
                 <input type="text" id="categoryName" name="categoryName" v-model="newCategory.CategoryName"/>
-                <button v-on:click.prevent="saveNewCategory" :disabled="validate">Save</button>
+                <button v-on:click.prevent="saveNewCategory" :disabled="validateCategory">Save</button>
                 <button v-on:click="resetAddForm">Cancel</button>
             </form>
     
@@ -128,8 +128,11 @@ export default {
         this.fetchData();
     },
     computed: {
-        validate() {
+        validateSupplier() {
             return !this.newSupplier.SupplierName;
+        },
+        validateCategory() {
+            return !this.newCategory.CategoryName;
         }
     },
     methods: {

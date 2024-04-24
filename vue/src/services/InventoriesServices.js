@@ -42,4 +42,8 @@ export default {
     updateItemByInventoryId(inventoryId, itemId, item) {
         return axios.put(`/inventories/${inventoryId}/item/${itemId}`, item);
     },
+
+    deleteItemByInventoryId(inventoryId, itemId) {
+        return axios.delete(`/inventories/${inventoryId}/item/${itemId}`);
+    }
 }
