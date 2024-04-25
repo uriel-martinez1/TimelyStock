@@ -8,6 +8,7 @@ export default {
     getSuppliers(){
         return axios.get(`/suppliers`);
     },
+    
     addSupplier(supplier){
         return axios.post(`/suppliers`, supplier);
     },

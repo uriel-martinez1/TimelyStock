@@ -8,7 +8,8 @@ export default {
     getCategories(){
         return axios.get(`/categories`);
     },
+    
     addCategory(category){
         return axios.post(`/categories`, category);
-    }
+    },
 }
