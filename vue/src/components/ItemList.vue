@@ -40,6 +40,7 @@ export default{
                 inventoriesServices.deleteItemByInventoryId(inventoryId, itemId)
                 .then ((response) => {
                     if (response.status === 204){
+                        this.retrieveItems();
                         this.pushToinventoryView();
                     }
                 })
@@ -55,6 +56,14 @@ export default{
         pushToinventoryView() {
             let inventoryId = this.$route.params.inventoryId;
             this.$router.push({name: 'InventoryView', params: {inventoryId: this.inventoryId}});
+        },
+        retrieveItems() {
+            let id = this.$route.params.inventoryId;
+            inventoriesServices.getItemsByInventoryId(id)
+            .then((response) => {
+                this.items = response.data;
+            })
+              
         },
     },
 }
