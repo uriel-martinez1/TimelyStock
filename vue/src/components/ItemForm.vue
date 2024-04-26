@@ -3,7 +3,7 @@
         <div class="field">
             <div id="itemName">
                 <label for="name">Item Name:</label>
-                <input type="text" id="name" name="name" v-model="updatedItem.itemName"/>
+                <input type="text" id="name" name="name" v-model="updatedItem.itemName" autocomplete="off"/>
             </div>
 
             <div id="productUrl">
