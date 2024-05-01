@@ -171,6 +171,7 @@ export default {
                 // Its a callback function -- error is the object and we are going to call the handleErrorResponse method
                 .catch (error => {
                     // we will add the handleErrorResponse method here
+                    this.handleErrorResponse(error, 'adding');
                 });
             } else {
                 // edit existing item
@@ -179,9 +180,21 @@ export default {
                 inventoryService.updateItemByInventoryId(inventoryId, itemId, this.updatedItem)
                 .then((response) => {
                     if (response.status === 200) {
+                        //lets send a notification when the item has been updated
+                        this.$store.commit(
+                            'SET_NOTIFICATION',
+                            {
+                                message: `Item ${this.updatedItem.itemId} was updated.`,
+                                type: 'success'
+                            }
+                        );
                         this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
                     }
                 })
+                .catch (error => {
+                    // handle error for updating item
+                    this.handleErrorResponse(error, 'updating');
+                });
             }
         },
         saveNewSupplier() {
