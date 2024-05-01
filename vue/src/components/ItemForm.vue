@@ -145,7 +145,7 @@ export default {
                 ]);
                 this.suppliers = suppliersResponse.data;
                 this.categories = categoriesResponse.data;
-                console.log("This is where item should be null" + this.updatedItem)
+                //console.log("This is where item should be null" + this.updatedItem)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -155,10 +155,22 @@ export default {
                 // Create new item 
                 inventoryService.addItemByInventoryId(this.updatedItem, this.$route.params.inventoryId)
                 .then((response) =>{
-                    if(response.status === 201){
+                    if(response.status === 201){                        
+                        // we will add a notification for when an item is added
+                        this.$store.commit(
+                            'SET_NOTIFICATION',
+                            {
+                                message: 'A new item was added to the inventory.',
+                                type: 'success'
+                            }
+                        );
                         // if successful, lets go back to the inventory view
                         this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
                     }
+                })
+                // Its a callback function -- error is the object and we are going to call the handleErrorResponse method
+                .catch (error => {
+                    // we will add the handleErrorResponse method here
                 });
             } else {
                 // edit existing item
@@ -213,6 +225,48 @@ export default {
         },
         cancelForm() {
             this.$router.back();
+        },
+        handleErrorResponse(error, verb) {
+            if (error.response) {
+                this.$store.commit( 'SET_NOTIFICATION',
+                "Error " + verb + "item. Response received was '" + error.response.statusText + "'.");
+            } else if (error.request) {
+                this.$store.commit('SET_NOTIFICATION', "Error " + verb + " item. Server could not be reached.");
+            } else {
+                this.$store.commit('SET_NOTIFICATION', "Error " + verb + " item. Request could not be created.");
+            }
+        },
+        // we need to validate the form
+        validateForm() {
+            let msg = '';
+            if (this.updatedItem.itemName.length === 0) {
+                msg += 'The new item must have a name. ';
+            } 
+            // available Quantity
+            if (this.updatedItem.availableQuantity === null || this.updatedItem.availableQuantity === undefined) {
+                msg += 'The new item must have an available quantity. It can be zero. ';
+            }
+            // reorder point
+            if (this.updatedItem.reorderPoint === null || this.updatedItem.reorderPoint === undefined) {
+                msg += 'The new item must have a reorder point. It can be zero. ';
+            }
+            // reorder quantity
+            if (this.updatedItem.reorderQuantity === null || this.updatedItem.reorderQuantity === undefined) {
+                msg += 'The new item must have a reorder quantity. It can be zero. ';
+            }
+            // categoryId
+            if (this.updatedItem.categoryId === null || this.updatedItem.categoryId === undefined) {
+                msg += 'The new item must have a category. ';
+            }
+            // supplier id
+            if (this.updatedItem.supplierId === null || this.updatedItem.supplierId === undefined) {
+                msg += 'The new item must have a supplier. ';
+            }
+            if (msg.length > 0) {
+                this.$store.commit('SET_NOTIFICATION', msg);
+                return false;
+            }
+            return true;
         },
     },
 };
