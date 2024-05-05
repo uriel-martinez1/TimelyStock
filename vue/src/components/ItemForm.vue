@@ -122,6 +122,8 @@ export default {
             newCategory: {
                 CategoryName: "",
             },
+            latestSupplierId: 0,
+            latestCategoryId: 0,
         };
     },
     mounted() {
@@ -205,6 +207,9 @@ export default {
                 console.log(response);
                 // Update the updatedItem.SupplierId with the newly created Supplier Id 
                 this.updatedItem.SupplierId = response.data.supplierId;
+                // Update the latestCategoryId to the newly created Category Id
+                this.latestSupplierId = response.data.supplierId;
+                console.log(this.latestSupplierId);
                 this.fetchData();
                 this.resetAddForm();
                 this.showAddSupplier = false;
