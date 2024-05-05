@@ -13,6 +13,10 @@
     <h2>Add new Inventory</h2>
     <button @click="goToAddInventoryView">Add Inventory</button>
   </div>
+
+  <div v-if="notification" class="notification" :class="notification.type">
+      {{ notification.message }}
+  </div>
 </template>
 
 <script>
@@ -26,10 +30,31 @@ export default {
     goToAddInventoryView() {
       this.$router.push({name: 'AddInventoryView'});
     },
-    
+  },
+  computed: {
+    notification() {
+        return this.$store.state.notification;
+    }
   }
-}
+};
 </script>
 
 <style>
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  z-index: 9999;
+}
+
+.success {
+  background-color: green;
+}
+
+.error {
+  background-color: red;
+}
 </style>

@@ -32,7 +32,6 @@ export default {
     },
     computed: {
         notification() {
-            console.log(this.$store.state.notification);
             return this.$store.state.notification;
         }
     }
