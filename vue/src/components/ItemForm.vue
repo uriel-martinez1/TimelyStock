@@ -128,6 +128,7 @@ export default {
             },
             latestSupplierId: 0,
             latestCategoryId: 0,
+            submitNotification: null,
         };
     },
     mounted() {
@@ -172,7 +173,7 @@ export default {
                                 message: 'A new item was added to the inventory.',
                                 type: 'success'
                             }
-                        );
+                        ); 
                         // if successful, lets go back to the inventory view
                         this.$router.push({name: 'InventoryView', params: {inventoryId: this.$route.params.inventoryId}});
                     }
@@ -336,4 +337,22 @@ export default {
 </script>
 
 
-<style></style>
+<style>
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  z-index: 9999;
+}
+
+.success {
+  background-color: green;
+}
+
+.error {
+  background-color: red;
+}
+</style>
