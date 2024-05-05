@@ -206,14 +206,21 @@ export default {
             .then((response) =>{
                 console.log(response);
                 // Update the updatedItem.SupplierId with the newly created Supplier Id 
-                this.updatedItem.SupplierId = response.data.supplierId;
+                this.updatedItem.supplierId = response.data.supplierId;
                 // Update the latestCategoryId to the newly created Category Id
                 this.latestSupplierId = response.data.supplierId;
-                console.log(this.latestSupplierId);
-                this.fetchData();
-                this.resetAddForm();
-                this.showAddSupplier = false;
+
+                // Fetch the data to update the suppliers array
+                this.fetchData().then(() => {
+                    // Reset the form and hide the "Add new Supplier" fomr
+                    this.resetAddForm();
+                    this.showAddSupplier = false;
+                    console.log(this.updatedItem.supplierId);
+                });
             })
+            .catch ((error) => {
+                console.error("Error adding supplier", error);
+            });
         },
         saveNewCategory() {
             // we need the category service here for create category
