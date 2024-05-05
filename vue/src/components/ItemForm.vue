@@ -210,12 +210,9 @@ export default {
                 // Update the latestCategoryId to the newly created Category Id
                 this.latestSupplierId = response.data.supplierId;
 
-                // Fetch the data to update the suppliers array
                 this.fetchData().then(() => {
-                    // Reset the form and hide the "Add new Supplier" fomr
                     this.resetAddForm();
                     this.showAddSupplier = false;
-                    console.log(this.updatedItem.supplierId);
                 });
             })
             .catch ((error) => {
