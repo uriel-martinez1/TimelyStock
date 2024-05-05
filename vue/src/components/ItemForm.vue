@@ -82,6 +82,10 @@
         <button>Save</button>
         <button v-on:click.prevent="cancelForm">Cancel</button>
     </form>
+
+    <div v-if="notification" class="notification" :class="notification.type">
+        {{ notification.message }}
+    </div>
     
 </template>
 
@@ -135,7 +139,10 @@ export default {
         },
         validateCategory() {
             return !this.newCategory.CategoryName;
-        }
+        },
+        notification() {
+            return this.$store.state.notification;
+        },
     },
     methods: {
         // lets grab the suppliers and categories
@@ -213,9 +220,25 @@ export default {
                     this.resetAddForm();
                     this.showAddSupplier = false;
                 });
+                // send notification
+                this.$store.commit(
+                    'SET_NOTIFICATION', 
+                    {
+                        message: 'New Supplier created successfully.',
+                        type: 'success'
+                    }
+                );
             })
             .catch ((error) => {
                 console.error("Error adding supplier", error);
+                // send notification
+                this.$store.commit(
+                    'SET_NOTIFICATION',
+                    {
+                        message: 'Failed to create new Supplier. Please try again.',
+                        type: 'error'
+                    }
+                );
             });
         },
         saveNewCategory() {
@@ -230,10 +253,24 @@ export default {
                     this.resetAddForm();
                     this.showAddCategory = false;
                 });
+                this.$store.commit(
+                    'SET_NOTIFICATION',
+                    {
+                        message: 'New Category created successfully.',
+                        type: 'success'
+                    }
+                );
             })
             .catch ((error) => {
                 console.error("Error adding category", error);
-            })
+                this.$store.commit(
+                    'SET_NOTIFICATION',
+                    {
+                        message: 'Failed to create new Category. Please try again.',
+                        type: 'error'
+                    }
+                );
+            });
         },
         resetAddForm() {
             this.showAddSupplier = false;
