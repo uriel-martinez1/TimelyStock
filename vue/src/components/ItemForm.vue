@@ -59,7 +59,7 @@
             </form>
 
             <div>
-                <label for="categoriess">Categories: </label>
+                <label for="categoriess">Category: </label>
                 <select id="categories" name="categories" v-model="updatedItem.categoryId" v-on:change="handleSupplierCategoryChange">
                     <option disabled selected>Select a category</option>
                     <!--This is where we display all the existing categories-->
@@ -204,7 +204,6 @@ export default {
             supplierServices
             .addSupplier(this.newSupplier)
             .then((response) =>{
-                console.log(response);
                 // Update the updatedItem.SupplierId with the newly created Supplier Id 
                 this.updatedItem.supplierId = response.data.supplierId;
                 // Update the latestCategoryId to the newly created Category Id
@@ -224,11 +223,16 @@ export default {
             categoriesService
             .addCategory(this.newCategory)
             .then((response) => {
-                console.log(response);
-                this.updatedItem.CategoryId = response.data.categoryId;
-                this.fetchData();
-                this.resetAddForm();
-                this.showAddCategory = false;
+                this.updatedItem.categoryId = response.data.categoryId;
+                this.latestCategoryId = response.data.categoryId;
+
+                this.fetchData().then(() => {
+                    this.resetAddForm();
+                    this.showAddCategory = false;
+                });
+            })
+            .catch ((error) => {
+                console.error("Error adding category", error);
             })
         },
         resetAddForm() {
