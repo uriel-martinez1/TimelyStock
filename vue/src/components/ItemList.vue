@@ -40,6 +40,13 @@ export default{
                 inventoriesServices.deleteItemByInventoryId(inventoryId, itemId)
                 .then ((response) => {
                     if (response.status === 204){
+                        this.$store.commit(
+                            'SET_NOTIFICATION',
+                            {
+                                message: 'Item was deleted from inventory.',
+                                type: 'success'
+                            }
+                        );
                         this.retrieveItems();
                         this.pushToinventoryView();
                     }
