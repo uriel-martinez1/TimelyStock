@@ -53,9 +53,14 @@ export default{
                 })
                 .catch ((error) => {
                     if (error.response.status === 404) {
-                        alert("Error deleting this item. This item may be deleted or you have entered an invalid item and inventory id");
-                        this.pushToinventoryView();
-                        
+                        this.$store.commit(
+                            'SET_NOTIFICATION',
+                            {
+                                message: 'Failed to delete the item from inventory. Please try again.',
+                                type: 'error'
+                            }
+                        );
+                        this.pushToinventoryView();   
                     }
                 });
             }
