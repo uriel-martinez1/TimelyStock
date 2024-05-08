@@ -194,7 +194,7 @@ export default {
                         this.$store.commit(
                             'SET_NOTIFICATION',
                             {
-                                message: `Item ${this.updatedItem.itemId} was updated.`,
+                                message: `${this.updatedItem.itemName} was updated.`,
                                 type: 'success'
                             }
                         );

@@ -36,10 +36,10 @@ export default {
     created() {
         // we need to grab the inventoryId from the urlPath
         let inventoryIdFromPath = parseInt(this.$route.params.inventoryId);
-        console.log(inventoryIdFromPath);
+        //console.log(inventoryIdFromPath);
         // we need to grag the itemId from the urlPath
         let itemIdFromPath = parseInt(this.$route.params.itemId);
-        console.log(itemIdFromPath);
+        //console.log(itemIdFromPath);
         // we then make sure both values are derived from the path and valid ids
         if (inventoryIdFromPath != 0 && itemIdFromPath != 0) {
             this.getItem(inventoryIdFromPath, itemIdFromPath);

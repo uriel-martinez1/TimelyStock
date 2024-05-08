@@ -12,6 +12,8 @@ import EditInventoryView from '../views/EditInventoryView.vue';
 import AddItemView from '../views/AddItemView.vue';
 import ItemView from '../views/ItemView.vue';
 import EditItemView from '../views/EditItemView.vue';
+import SupplierView from '../views/SupplierView.vue';
+import CategoryView from '../views/CategoryView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -74,6 +76,22 @@ const routes = [
     path: "/inventories/:inventoryId/item/:itemId",
     name: "ItemView",
     component: ItemView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/inventories/:inventoryId/item/:itemId/supplier/:supplierId",
+    name: "SupplierView",
+    component: SupplierView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/inventories/:inventoryId/item/:itemId/category/:categoryId",
+    name: "CategoryView",
+    component: CategoryView,
     meta: {
       requiresAuth: true
     }
