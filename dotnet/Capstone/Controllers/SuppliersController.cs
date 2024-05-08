@@ -34,6 +34,20 @@ namespace Capstone.Controllers
             }
         }
 
+        [HttpGet("{supplierId}")]
+        public ActionResult<Supplier> GetSupplierByInventoryId(int supplierId)
+        {
+            try
+            {
+                Supplier output = supplierDao.GetSupplierById(supplierId);
+                return Ok(output);
+            }
+            catch (System.Exception)
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost()]
         public ActionResult<Supplier> AddSupplier(Supplier supplier)
         {
