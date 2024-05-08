@@ -12,4 +12,8 @@ export default {
     addSupplier(supplier){
         return axios.post(`/suppliers`, supplier);
     },
+
+    getSupplierById(supplierId){
+        return axios.get(`/supplier/${supplierId}`);
+    },
 }

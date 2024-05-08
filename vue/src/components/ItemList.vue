@@ -5,9 +5,9 @@
                 <router-link v-bind:to="{name: 'ItemView', params: {inventoryId: this.$route.params.inventoryId, itemId: item.itemId}}">
                     {{ item.itemName }}
                 </router-link>
-                <!-- <router-link>
-                    {{ item.availableQuantity }}
-                </router-link> -->
+                <router-link v-bind:to="{name: 'SupplierView', params: {inventoryId: this.$route.params.inventoryId, itemId: item.itemId, supplierId: item.supplierId}}">
+                    {{ getSupplierName(item.supplierId) }}
+                </router-link>
                 <button v-on:click="editItem(item.itemId)">Edit</button>
                 <button v-on:click="deleteItem(item.itemId)">Delete</button>
             </li>
@@ -17,11 +17,13 @@
 
 <script>
 import inventoriesServices from '../services/InventoriesServices';
+import supplierServices from '../services/SuppliersServices';
 
 export default{
     data() {
         return {
-            items: []
+            items: [],
+            supplier: {}, // object to store details
         }
     },
     created() {
@@ -29,6 +31,8 @@ export default{
         inventoriesServices.getItemsByInventoryId(id)
         .then ((response) =>{
             this.items = response.data;
+            // fetch supplier details when items are retrieved
+            this.fetchSupplierDetail();
         });
     },
     methods: {
@@ -79,6 +83,20 @@ export default{
                 this.items = response.data;
             })
               
+        },
+        // method to fetch supplier details based on supplierIdf
+        fetchSupplierDetail() {
+            this.items.forEach((item) => {
+                supplierServices.getSupplierById(item.supplierId)
+                    .then((response) => {
+                        // store supplier details in the supplier object
+                        console.log(response.data.name);
+                        this.$set(this.supplier, item.supplierId, response.data.name);
+                    });
+            });
+        },
+        getSupplierName(supplierId) {
+            return this.supplier[supplierId] || '';
         },
     },
 }
