@@ -14,6 +14,6 @@ export default {
     },
 
     getSupplierById(supplierId){
-        return axios.get(`/supplier/${supplierId}`);
+        return axios.get(`/suppliers/${supplierId}`);
     },
 }

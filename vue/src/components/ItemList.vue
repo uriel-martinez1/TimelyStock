@@ -3,11 +3,13 @@
         <ul>
             <li v-for="item in items" v-bind:key="item.itemId">
                 <router-link v-bind:to="{name: 'ItemView', params: {inventoryId: this.$route.params.inventoryId, itemId: item.itemId}}">
-                    {{ item.itemName }}
+                    Item Name: {{ item.itemName }}
                 </router-link>
+                <br>
                 <router-link v-bind:to="{name: 'SupplierView', params: {inventoryId: this.$route.params.inventoryId, itemId: item.itemId, supplierId: item.supplierId}}">
-                    {{ getSupplierName(item.supplierId) }}
+                    Supplier: {{ getSupplierName(item.supplierId) }}
                 </router-link>
+                <br>
                 <button v-on:click="editItem(item.itemId)">Edit</button>
                 <button v-on:click="deleteItem(item.itemId)">Delete</button>
             </li>
@@ -90,8 +92,8 @@ export default{
                 supplierServices.getSupplierById(item.supplierId)
                     .then((response) => {
                         // store supplier details in the supplier object
-                        console.log(response.data.name);
-                        this.$set(this.supplier, item.supplierId, response.data.name);
+                        console.log(response.data.supplierName);
+                        this.supplier[item.supplierId] = response.data.supplierName;
                     });
             });
         },
