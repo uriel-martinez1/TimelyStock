@@ -49,6 +49,7 @@
                     <!--If the user wants to add a new supplier, then they must select the add new supplier dropdown-->
                     <option value="addSupplier">Add new supplier</option>
                 </select>
+                <!--<button>Delete</button>-->
             </div>
             <!--This is the form for the new supplier-->
             <form v-if="showAddSupplier">
